@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('nama_dokter');
             $table->string('email')->unique();
+            $table->string('sts_dokter');
             $table->timestamps();
         });
     }
