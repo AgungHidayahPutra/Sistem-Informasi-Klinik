@@ -31,26 +31,40 @@
         .bg-body-white {
             background-color: #E6E6FA;
         }
+
+        .bg-blue {
+            background-image: linear-gradient(to bottom, #004AAD, #004AAD, #5080FD);
+            /* background-color: #004AAD; */
+        }
+
+        .logo {
+            width: 130px;
+        }
+
+        .text-lavender {
+            color: #E6E6FA !important;
+        }
+
+        .active {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
 <body class="sb-nav-fixed bg-body-white calsans">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-white">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand ps-3" href=""><img src="{{ asset('assets/images/logo-klinik.png') }}" alt="" class="logo"></a>
         <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-            </div>
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 text-dark" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+          <!-- Navbar Search-->
+          <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -64,41 +78,41 @@
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark bg-white" id="sidenavAccordion">
+            <nav class="sb-sidenav accordion sb-sidenav-dark bg-blue" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading text-dark">Admin</div>
-                        <a class="nav-link text-dark" href="/">
-                            <div class="sb-nav-link-icon text-dark"><i class="fa-solid fa-house"></i></div>
+                        <div class="sb-sidenav-menu-heading text-lavender">Admin</div>
+                        <a class="nav-link text-lavender" href="/">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link text-dark" href="/pasien">
-                            <div class="sb-nav-link-icon text-dark"><i class="fa-solid fa-hospital-user"></i></div>
+                        <a class="nav-link text-lavender" href="/pasien">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-hospital-user"></i></div>
                             Pasien
                         </a>
-                        <a class="nav-link text-dark" href="/rekam-medis">
-                            <div class="sb-nav-link-icon text-dark"><i class="fa-solid fa-laptop-medical"></i></div>
+                        <a class="nav-link text-lavender" href="/rekam-medis">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
                         </a>
-                        <a class="nav-link text-dark" href="/jadwal">
-                            <div class="sb-nav-link-icon text-dark"><i class="fa-solid fa-calendar-days"></i></div>
+                        <a class="nav-link text-lavender" href="/jadwal">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-calendar-days"></i></div>
                             Jadwal
                         </a>
-                        <a class="nav-link text-dark" href="/dokter">
-                            <div class="sb-nav-link-icon text-dark"><i class="fa-solid fa-user-doctor"></i></div>
+                        <a class="nav-link text-lavender active" href="/dokter">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
-                        <a class="nav-link text-dark" href="/antrian">
-                            <div class="sb-nav-link-icon text-dark"><i class="fa-solid fa-users-between-lines"></i></div>
+                        <a class="nav-link text-lavender" href="/antrian">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian
                         </a>
-                        <a class="nav-link text-dark" href="/pembayaran">
-                            <div class="sb-nav-link-icon text-dark"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <a class="nav-link text-lavender" href="/pembayaran">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
+                <div class="sb-sidenav-footer bg-white text-dark">
                     <div class="small">Logged in as:</div>
                     Start Bootstrap
                 </div>
@@ -243,15 +257,10 @@
                     </div>
                 </div>
             </main>
-            <footer class="py-4 bg-light mt-auto">
+            <footer class="py-4 bg-light mt-auto bg-white">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
+                        <div class="text-dark">Copyright &copy; Klinik Pangeran 2025</div>
                     </div>
                 </div>
             </footer>
