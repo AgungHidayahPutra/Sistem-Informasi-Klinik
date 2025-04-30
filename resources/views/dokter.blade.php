@@ -185,6 +185,7 @@
                                         <th>sts_dokter</th>
                                         <th>No HP</th>
                                         <th>Email</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
