@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PoliController;
 
 Route::resource('pasien', PasienController::class);
-
+Route::resource('poli', PoliController::class);
 
 Route::get('/', function () {
     return view('dashboard');
