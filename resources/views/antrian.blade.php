@@ -102,6 +102,10 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
+                        <a class="nav-link text-lavender" href="/poli">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
+                            Poli
+                        </a>
                         <a class="nav-link text-lavender active" href="/antrian">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian
