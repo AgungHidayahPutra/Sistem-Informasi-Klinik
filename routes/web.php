@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PasienController;
+
+Route::resource('pasien', PasienController::class);
+
 
 Route::get('/', function () {
     return view('dashboard');
@@ -16,10 +20,6 @@ Route::get('/antrian', function () {
 
 Route::get('/jadwal', function () {
     return view('jadwal');
-});
-
-Route::get('/pasien', function () {
-    return view('pasien');
 });
 
 Route::get('/pembayaran', function () {
