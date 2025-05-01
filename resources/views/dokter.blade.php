@@ -156,8 +156,11 @@
                                                     <input type="text" name="spesialis" class="form-control" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label>sts_dokter</label>
-                                                    <textarea name="sts_dokter" class="form-control" required></textarea>
+                                                    <label>Status Dokter</label>
+                                                    <select name="sts_dokter" class="form-control" required>
+                                                        <option value="Tersedia">Tersedia</option>
+                                                        <option value="Tidak Tersedia">Tidak Tersedia</option>
+                                                    </select>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>No HP</label>
@@ -219,7 +222,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data dokter <strong>{{ $d->nama_pasien }}</strong>?
+                                                                Apakah Anda yakin ingin menghapus data dokter <strong>{{ $d->nama_dokter }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -254,8 +257,11 @@
                                                                     <input type="text" name="spesialis" class="form-control" value="{{ $d->spesialis }}" required>
                                                                 </div>
                                                                 <div class="mb-3">
-                                                                    <label>sts dokter</label>
-                                                                    <textarea name="sts_dokter" class="form-control" required>{{ $d->sts_dokter }}</textarea>
+                                                                    <label>Status Dokter</label>
+                                                                    <select name="sts_dokter" class="form-control" required>
+                                                                        <option value="Tersedia" {{ $d->sts_dokter == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
+                                                                        <option value="Tidak Tersedia" {{ $d->sts_dokter == 'Tidak Tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
+                                                                    </select>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label>No HP</label>
