@@ -10,9 +10,10 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('dokter_id');
             $table->string('hari');
             $table->string('jam');
-            $table->foreignId('id_dokter')->constrained('dokter')->onDelete('cascade');
+            $table->foreign(columns: 'dokter_id')->references('id')->on('dokter')->onDelete('cascade');
             $table->timestamps();
         });
     }
