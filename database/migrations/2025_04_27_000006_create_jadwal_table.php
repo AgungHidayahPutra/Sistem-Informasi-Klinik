@@ -13,8 +13,9 @@ return new class extends Migration
             $table->unsignedBigInteger('dokter_id');
             $table->string('hari');
             $table->string('jam');
-            $table->foreign(columns: 'dokter_id')->references('id')->on('dokter')->onDelete('cascade');
             $table->timestamps();
+
+            $table->foreign('dokter_id')->references('id')->on('dokter')->onDelete('cascade');
         });
     }
 
