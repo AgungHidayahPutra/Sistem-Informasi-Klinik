@@ -12,7 +12,6 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\RekamMedisController;
 
 
-
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -25,8 +24,7 @@ Route::resource('dokter', DokterController::class)->except(['show']);
 Route::resource('antrian', AntrianController::class);
 Route::resource('pembayaran', PembayaranController::class);
 Route::resource('jadwal', JadwalController::class);
-Route::resource('rekam-medis', RekamMedisControllerController::class);
-
+Route::resource('rekam-medis', RekamMedisController::class);
 
 
 // Route tambahan untuk verifikasi email sebelum akses data dokter
