@@ -4,6 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PoliController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware('auth')->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
 Route::resource('pasien', PasienController::class);
 Route::resource('poli', PoliController::class);
@@ -14,11 +23,6 @@ Route::post('/dokter/verifikasi', [DokterController::class, 'verifikasiEmail'])-
 
 // Route untuk menghapus sesi verifikasi email
 Route::get('/dokter/logoutverifikasi', [DokterController::class, 'logoutVerifikasi'])->name('dokter.logoutverifikasi');
-
-Route::get('/', function () {
-    return view('dashboard');
-});
-
 
 Route::get('/antrian', function () {
     return view('antrian');
