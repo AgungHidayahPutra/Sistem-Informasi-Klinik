@@ -49,6 +49,7 @@
         .active {
             text-decoration: underline;
         }
+
         .list-group {
             width: 100%;
             max-height: 200px;
@@ -215,9 +216,10 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="mb-2">
+
+                                                        <div class="mb-3">
                                                             <label>Pasien</label>
-                                                            <select name="pasien_id" class="form-control">
+                                                            <select name="pasien_id" class="form-control" required>
                                                                 @foreach($pasiens as $pasien)
                                                                 <option value="{{ $pasien->id }}" {{ $antrian->pasien_id == $pasien->id ? 'selected' : '' }}>
                                                                     {{ $pasien->nama_pasien }}
@@ -225,19 +227,10 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="mb-2">
-                                                            <label>Poli</label>
-                                                            <select name="poli_id" class="form-control">
-                                                                @foreach($polis as $poli)
-                                                                <option value="{{ $poli->id }}" {{ $antrian->poli_id == $poli->id ? 'selected' : '' }}>
-                                                                    {{ $poli->nama_poli }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-2">
+
+                                                        <div class="mb-3">
                                                             <label>Dokter</label>
-                                                            <select name="dokter_id" class="form-control">
+                                                            <select name="dokter_id" class="form-control" required>
                                                                 @foreach($dokters as $dokter)
                                                                 <option value="{{ $dokter->id }}" {{ $antrian->dokter_id == $dokter->id ? 'selected' : '' }}>
                                                                     {{ $dokter->nama_dokter }}
@@ -245,19 +238,24 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="mb-2">
-                                                            <label>Status</label>
-                                                            <select name="status" class="form-control">
-                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
-                                                                <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
-                                                                    {{ $status }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
+                                                        <div class="mb-3">
+                                                            <label>Layanan</label>
+                                                            <input type="text" name="layanan" class="form-control" value="{{ $antrian->layanan ?? '' }}" required>
                                                         </div>
+
+                                                        <div class="mb-3">
+                                                            <label>Nominal</label>
+                                                            <input type="text" name="nominal" class="form-control" value="{{ $antrian->nominal ?? '' }}" required>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label>Jenis Pembayaran</label>
+                                                            <input type="text" name="jns_pembayaran" class="form-control" value="{{ $antrian->jns_pembayaran ?? '' }}" required>
+                                                        </div>
+
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button class="btn btn-primary">Simpan Perubahan</button>
+                                                        <button class="btn btn-success">Simpan Perubahan</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -295,14 +293,14 @@
                                                     <input type="text" name="nama_dokter" id="nama_dokter" class="form-control" placeholder="" autocomplete="off">
                                                     <input type="hidden" name="dokter_id" id="dokter_id">
                                                     <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
-                                                    <div class="mb-3">
-                                                        <label>Status</label>
-                                                        <select name="status" class="form-control">
-                                                            <option value="Menunggu" selected>Menunggu</option>
-                                                            <option value="Sedang diperiksa">Sedang diperiksa</option>
-                                                            <option value="Selesai">Selesai</option>
-                                                        </select>
-                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Status</label>
+                                                    <select name="status" class="form-control">
+                                                        <option value="Menunggu" selected>Menunggu</option>
+                                                        <option value="Sedang diperiksa">Sedang diperiksa</option>
+                                                        <option value="Selesai">Selesai</option>
+                                                    </select>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-success">Simpan</button>
@@ -376,7 +374,7 @@
             text: "{{ session('error') }}"
         });
     </script>
-@endif
+    @endif
 </body>
 
 </html>

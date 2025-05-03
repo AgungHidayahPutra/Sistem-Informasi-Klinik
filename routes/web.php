@@ -39,10 +39,6 @@ Route::get('/jadwal', function () {
     return view('jadwal');
 });
 
-Route::get('/pembayaran', function () {
-    return view('pembayaran');
-});
-
 Route::get('/rekam-medis', function () {
     return view('rekam-medis');
 });

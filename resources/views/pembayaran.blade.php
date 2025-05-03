@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         @font-face {
@@ -48,6 +49,14 @@
         .active {
             text-decoration: underline;
         }
+
+        .list-group {
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            z-index: 999;
+        }
     </style>
 </head>
 
@@ -57,8 +66,8 @@
         <a class="navbar-brand ps-3" href=""><img src="{{ asset('assets/images/logo-klinik.png') }}" alt="" class="logo"></a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 text-dark" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-          <!-- Navbar Search-->
-          <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
 
         </form>
         <!-- Navbar-->
@@ -129,134 +138,183 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Pembayaran</li>
                     </ol>
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Primary Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Warning Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">Success Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">Danger Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            DataTable Example
+                            Data Pembayaran
                         </div>
                         <div class="card-body">
+
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Pembayaran</button>
+
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>No</th>
+                                        <th>Nama Pasien</th>
+                                        <th>Nama Dokter</th>
+                                        <th>Layanan</th>
+                                        <th>Nominal</th>
+                                        <th>Jenis Pembayaran</th>
+                                        <th>Tanggal Pembayaran</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </tfoot>
                                 <tbody>
+                                    @foreach ($pembayarans as $index => $pembayaran)
                                     <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $pembayaran->pasien->nama_pasien }}</td>
+                                        <td>{{ $pembayaran->poli->nama_poli }}</td>
+                                        <td>{{ $pembayaran->dokter->nama_dokter }}</td>
+                                        <td>{{ $pembayaran->layanan }}</td>
+                                        <td>{{ $pembayaran->nominal }}</td>
+                                        <td>{{ $pembayaran->jns_pembayaran }}</td>
+                                        <td>{{ $pembayaran->tgl_pembayaran }}</td>
+                                        <td>
+                                            <!-- Edit -->
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $pembayaran->id }}">Edit</button>
+
+                                            <!-- Hapus -->
+                                            <form action="{{ url('/pembayaran/' . $pembayaran->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $pembayaran->id }}">
+                                                    Delete
+                                                </button>
+                                            </form>
+
+                                            <!-- Modal Konfirmasi Delete -->
+                                            <div class="modal fade" id="deleteModal{{ $pembayaran->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $pembayaran->id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <form action="{{ route('pembayaran.destroy', $pembayaran->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteModalLabel{{ $pembayaran->id }}">Konfirmasi Hapus</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Apakah Anda yakin ingin menghapus data pembayaran pasien <strong>{{ $pembayaran->pasien->nama_pasien }}</strong>?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>63</td>
-                                        <td>2011/07/25</td>
-                                        <td>$170,750</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ashton Cox</td>
-                                        <td>Junior Technical Author</td>
-                                        <td>San Francisco</td>
-                                        <td>66</td>
-                                        <td>2009/01/12</td>
-                                        <td>$86,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Michael Bruce</td>
-                                        <td>Javascript Developer</td>
-                                        <td>Singapore</td>
-                                        <td>29</td>
-                                        <td>2011/06/27</td>
-                                        <td>$183,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Donna Snider</td>
-                                        <td>Customer Support</td>
-                                        <td>New York</td>
-                                        <td>27</td>
-                                        <td>2011/01/25</td>
-                                        <td>$112,000</td>
-                                    </tr>
+
+                                    <!-- Modal Edit -->
+                                    <div class="modal fade" id="editModal{{ $pembayaran->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <form action="{{ route('pembayaran.update', $pembayaran->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Antrian</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-2">
+                                                            <label>Pasien</label>
+                                                            <select name="pasien_id" class="form-control">
+                                                                @foreach($pasiens as $pasien)
+                                                                <option value="{{ $pasien->id }}" {{ $antrian->pasien_id == $pasien->id ? 'selected' : '' }}>
+                                                                    {{ $pasien->nama_pasien }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Poli</label>
+                                                            <select name="poli_id" class="form-control">
+                                                                @foreach($polis as $poli)
+                                                                <option value="{{ $poli->id }}" {{ $antrian->poli_id == $poli->id ? 'selected' : '' }}>
+                                                                    {{ $poli->nama_poli }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Dokter</label>
+                                                            <select name="dokter_id" class="form-control">
+                                                                @foreach($dokters as $dokter)
+                                                                <option value="{{ $dokter->id }}" {{ $antrian->dokter_id == $dokter->id ? 'selected' : '' }}>
+                                                                    {{ $dokter->nama_dokter }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Status</label>
+                                                            <select name="status" class="form-control">
+                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
+                                                                <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
+                                                                    {{ $status }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-primary">Simpan Perubahan</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    @endforeach
                                 </tbody>
                             </table>
+
+                            <div class="modal fade" id="tambahModal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <form action="{{ route('pembayaran.store') }}" method="POST">
+                                        @csrf
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Tambah Pembayaran</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 position-relative">
+                                                    <label>Pasien</label>
+                                                    <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="hidden" name="pasien_id" id="pasien_id">
+                                                    <div id="list_pasien" class="list-group position-absolute w-100 z-10"></div>
+                                                </div>
+
+                                                <div class="mb-3 position-relative">
+                                                    <label>Dokter</label>
+                                                    <input type="text" name="nama_dokter" id="nama_dokter" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="hidden" name="dokter_id" id="dokter_id">
+                                                    <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Layanan</label>
+                                                    <input type="text" name="layanan" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Nominal</label>
+                                                    <input type="text" name="nominal" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Jenis Pembayaran</label>
+                                                    <input type="text" name="jns_pembayaran" class="form-control" required>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-success">Simpan</button>
+                                                </div>
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -270,6 +328,42 @@
             </footer>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function autocompleteInput(inputId, listId, hiddenId, route) {
+            $('#' + inputId).on('keyup', function() {
+                let query = $(this).val();
+                if (query.length > 1) {
+                    $.get(route, {
+                        term: query
+                    }, function(data) {
+                        let listHtml = '';
+                        data.forEach(item => {
+                            listHtml += `<button type="button" class="list-group-item list-group-item-action" data-id="${item.id}" data-nama="${item.label}">${item.label}</button>`;
+                        });
+                        $('#' + listId).html(listHtml).fadeIn();
+                    });
+                } else {
+                    $('#' + listId).fadeOut();
+                }
+            });
+
+            $('#' + listId).on('click', 'button', function() {
+                let nama = $(this).data('nama');
+                let id = $(this).data('id');
+                $('#' + inputId).val(nama);
+                $('#' + hiddenId).val(id);
+                $('#' + listId).fadeOut();
+            });
+        }
+
+        $(document).ready(function() {
+            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocomplete/pasien');
+            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocomplete/dokter');
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -277,6 +371,15 @@
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/datatables-simple-demo.js') }}"></script>
+    @if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "{{ session('error') }}"
+        });
+    </script>
+    @endif
 </body>
 
 </html>
