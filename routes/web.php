@@ -17,7 +17,7 @@ Route::middleware('auth')->get('/dashboard', [DashboardController::class, 'index
 
 Route::resource('pasien', PasienController::class);
 Route::resource('poli', PoliController::class);
-Route::resource('dokter', DokterController::class);
+Route::resource('dokter', DokterController::class)->except(['show']);
 Route::resource('antrian', AntrianController::class);
 
 // Route tambahan untuk verifikasi email sebelum akses data dokter
