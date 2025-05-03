@@ -227,7 +227,16 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-
+                                                        <div class="mb-2">
+                                                            <label>Poli</label>
+                                                            <select name="poli_id" class="form-control">
+                                                                @foreach($polis as $poli)
+                                                                <option value="{{ $poli->id }}" {{ $antrian->poli_id == $poli->id ? 'selected' : '' }}>
+                                                                    {{ $poli->nama_poli }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                         <div class="mb-3">
                                                             <label>Dokter</label>
                                                             <select name="dokter_id" class="form-control" required>
@@ -239,20 +248,15 @@
                                                             </select>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label>Layanan</label>
-                                                            <input type="text" name="layanan" class="form-control" value="{{ $antrian->layanan ?? '' }}" required>
+                                                            <label>Status</label>
+                                                            <select name="status" class="form-control">
+                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
+                                                                <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
+                                                                    {{ $status }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
-
-                                                        <div class="mb-3">
-                                                            <label>Nominal</label>
-                                                            <input type="text" name="nominal" class="form-control" value="{{ $antrian->nominal ?? '' }}" required>
-                                                        </div>
-
-                                                        <div class="mb-3">
-                                                            <label>Jenis Pembayaran</label>
-                                                            <input type="text" name="jns_pembayaran" class="form-control" value="{{ $antrian->jns_pembayaran ?? '' }}" required>
-                                                        </div>
-
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-success">Simpan Perubahan</button>
