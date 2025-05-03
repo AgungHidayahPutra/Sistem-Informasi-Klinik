@@ -10,14 +10,18 @@ return new class extends Migration
     {
         Schema::create('rme', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('pasien_id');
+            $table->unsignedBigInteger('poli_id');
+            $table->unsignedBigInteger('dokter_id');
             $table->string('keluhan');
             $table->string('resep_obat');
             $table->string('penyakit');
             $table->timestamp('tgl_daftar')->useCurrent();
-            $table->foreignId('id_dokter')->constrained('dokter')->onDelete('cascade');
-            $table->foreignId('id_pasien')->constrained('pasien')->onDelete('cascade');
-            $table->foreignId('id_poli')->constrained('poli')->onDelete('cascade');
             $table->timestamps();
+
+            $table->foreign('pasien_id')->references('id')->on('pasien')->onDelete('cascade');
+            $table->foreign('poli_id')->references('id')->on('poli')->onDelete('cascade');
+            $table->foreign('dokter_id')->references('id')->on('dokter')->onDelete('cascade');
         });
     }
 
