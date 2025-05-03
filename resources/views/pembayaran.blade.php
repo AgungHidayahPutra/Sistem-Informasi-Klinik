@@ -216,7 +216,7 @@
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Antrian</h5>
+                                                        <h5 class="modal-title">Edit Pembayaran</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -224,7 +224,7 @@
                                                             <label>Pasien</label>
                                                             <select name="pasien_id" class="form-control">
                                                                 @foreach($pasiens as $pasien)
-                                                                <option value="{{ $pasien->id }}" {{ $antrian->pasien_id == $pasien->id ? 'selected' : '' }}>
+                                                                <option value="{{ $pasien->id }}" {{ $pembayaran->pasien_id == $pasien->id ? 'selected' : '' }}>
                                                                     {{ $pasien->nama_pasien }}
                                                                 </option>
                                                                 @endforeach
@@ -234,21 +234,23 @@
                                                             <label>Dokter</label>
                                                             <select name="dokter_id" class="form-control">
                                                                 @foreach($dokters as $dokter)
-                                                                <option value="{{ $dokter->id }}" {{ $antrian->dokter_id == $dokter->id ? 'selected' : '' }}>
+                                                                <option value="{{ $dokter->id }}" {{ $pembayaran->dokter_id == $dokter->id ? 'selected' : '' }}>
                                                                     {{ $dokter->nama_dokter }}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label>Status</label>
-                                                            <select name="status" class="form-control">
-                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
-                                                                <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
-                                                                    {{ $status }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
+                                                            <label>Nominal</label>
+                                                            <input type="number" name="nominal" class="form-control" value="{{ $pembayaran->nominal }}">
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Layanan</label>
+                                                            <input type="text" name="layanan" class="form-control" value="{{ $pembayaran->layanan }}">
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Jenis Pembayaran</label>
+                                                            <input type="text" name="jns_pembayaran" class="form-control" value="{{ $pembayaran->jns_pembayaran }}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
