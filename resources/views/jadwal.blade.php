@@ -226,7 +226,7 @@
                                                         </div>
                                                         <div class="mb-2">
                                                             <label>Hari</label>
-                                                            <input type="number" name="hari" class="form-control" value="{{ $jadwal->hari }}">
+                                                            <input type="text" name="hari" class="form-control" value="{{ $jadwal->hari }}">
                                                         </div>
                                                         <div class="mb-2">
                                                             <label>Jam</label>
@@ -254,13 +254,6 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="mb-3 position-relative">
-                                                    <label>Pasien</label>
-                                                    <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="" autocomplete="off">
-                                                    <input type="hidden" name="pasien_id" id="pasien_id">
-                                                    <div id="list_pasien" class="list-group position-absolute w-100 z-10"></div>
-                                                </div>
-
                                                 <div class="mb-3 position-relative">
                                                     <label>Dokter</label>
                                                     <input type="text" name="nama_dokter" id="nama_dokter" class="form-control" placeholder="" autocomplete="off">
