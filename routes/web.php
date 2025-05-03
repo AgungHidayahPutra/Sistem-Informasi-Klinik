@@ -33,14 +33,14 @@ Route::post('/dokter/verifikasi', [DokterController::class, 'verifikasiEmail'])-
 // Route untuk menghapus sesi verifikasi email
 Route::get('/dokter/logoutverifikasi', [DokterController::class, 'logoutVerifikasi'])->name('dokter.logoutverifikasi');
 
-Route::get('/autocomplete/pasien', [AntrianController::class, 'autocompletePasien']);
-Route::get('/autocomplete/poli', [AntrianController::class, 'autocompletePoli']);
-Route::get('/autocomplete/dokter', [AntrianController::class, 'autocompleteDokter']);
+Route::get('/autocompleteantrian/pasien', [AntrianController::class, 'autocompletePasien']);
+Route::get('/autocompleteantrian/poli', [AntrianController::class, 'autocompletePoli']);
+Route::get('/autocompleteantrian/dokter', [AntrianController::class, 'autocompleteDokter']);
 
-Route::get('/autocomplete/pasien', [PembayaranController::class, 'autocompletePasien']);
-Route::get('/autocomplete/dokter', [PembayaranController::class, 'autocompleteDokter']);
+Route::get('/autocompletepembayaran/pasien', [PembayaranController::class, 'autocompletePasien']);
+Route::get('/autocompletepembayaran/dokter', [PembayaranController::class, 'autocompleteDokter']);
 
-Route::get('/autocomplete/dokter', [JadwalController::class, 'autocompleteDokter']);
+Route::get('/autocompletejadwal/dokter', [JadwalController::class, 'autocompleteDokter']);
 
 Route::get('/autocomplete/pasien', [RekamMedisController::class, 'autocompletePasien']);
 Route::get('/autocomplete/poli', [RekamMedisController::class, 'autocompletePoli']);

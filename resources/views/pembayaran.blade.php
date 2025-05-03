@@ -350,8 +350,8 @@
         }
 
         $(document).ready(function() {
-            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocomplete/pasien');
-            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocomplete/dokter');
+            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompletepembayaran/pasien');
+            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompletepembayaran/dokter');
         });
     </script>
 

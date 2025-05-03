@@ -357,9 +357,9 @@
         }
 
         $(document).ready(function() {
-            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocomplete/pasien');
-            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocomplete/poli');
-            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocomplete/dokter');
+            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompleteantrian/pasien');
+            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocompleteantrian/poli');
+            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompleteantrian/dokter');
         });
     </script>
 

@@ -319,7 +319,7 @@
         }
 
         $(document).ready(function() {
-            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocomplete/dokter');
+            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompletejadwal/dokter');
         });
     </script>
 
