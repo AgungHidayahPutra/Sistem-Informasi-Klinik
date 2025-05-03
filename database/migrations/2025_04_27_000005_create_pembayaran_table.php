@@ -10,13 +10,16 @@ return new class extends Migration
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('pasien_id');
+            $table->unsignedBigInteger('dokter_id');
             $table->timestamp('tgl_pembayaran')->useCurrent();
             $table->integer('nominal');
             $table->string('layanan');
             $table->string('jns_pembayaran');
-            $table->foreignId('id_dokter')->constrained('dokter')->onDelete('cascade');
-            $table->foreignId('id_pasien')->constrained('pasien')->onDelete('cascade');
             $table->timestamps();
+
+            $table->foreign('pasien_id')->references('id')->on('pasien')->onDelete('cascade');
+            $table->foreign('dokter_id')->references('id')->on('dokter')->onDelete('cascade');
         });
     }
 
