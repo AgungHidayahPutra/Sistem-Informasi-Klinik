@@ -13,7 +13,6 @@ return new class extends Migration
             $table->string('keluhan');
             $table->string('resep_obat');
             $table->string('penyakit');
-            $table->string('sts_pasien');
             $table->timestamp('tgl_daftar')->useCurrent();
             $table->foreignId('id_dokter')->constrained('dokter')->onDelete('cascade');
             $table->foreignId('id_pasien')->constrained('pasien')->onDelete('cascade');
