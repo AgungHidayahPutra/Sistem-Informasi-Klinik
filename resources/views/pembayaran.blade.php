@@ -165,7 +165,6 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $pembayaran->pasien->nama_pasien }}</td>
-                                        <td>{{ $pembayaran->poli->nama_poli }}</td>
                                         <td>{{ $pembayaran->dokter->nama_dokter }}</td>
                                         <td>{{ $pembayaran->layanan }}</td>
                                         <td>{{ $pembayaran->nominal }}</td>
@@ -227,16 +226,6 @@
                                                                 @foreach($pasiens as $pasien)
                                                                 <option value="{{ $pasien->id }}" {{ $antrian->pasien_id == $pasien->id ? 'selected' : '' }}>
                                                                     {{ $pasien->nama_pasien }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-2">
-                                                            <label>Poli</label>
-                                                            <select name="poli_id" class="form-control">
-                                                                @foreach($polis as $poli)
-                                                                <option value="{{ $poli->id }}" {{ $antrian->poli_id == $poli->id ? 'selected' : '' }}>
-                                                                    {{ $poli->nama_poli }}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
