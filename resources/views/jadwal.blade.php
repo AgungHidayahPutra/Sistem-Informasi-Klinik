@@ -218,21 +218,19 @@
                                                             <label>Dokter</label>
                                                             <select name="dokter_id" class="form-control">
                                                                 @foreach($dokters as $dokter)
-                                                                <option value="{{ $dokter->id }}" {{ $antrian->dokter_id == $dokter->id ? 'selected' : '' }}>
+                                                                <option value="{{ $dokter->id }}" {{ $jadwal->dokter_id == $dokter->id ? 'selected' : '' }}>
                                                                     {{ $dokter->nama_dokter }}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label>Status</label>
-                                                            <select name="status" class="form-control">
-                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
-                                                                <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
-                                                                    {{ $status }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
+                                                            <label>Hari</label>
+                                                            <input type="number" name="hari" class="form-control" value="{{ $jadwal->hari }}">
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label>Jam</label>
+                                                            <input type="text" name="jam" class="form-control" value="{{ $jadwal->jam }}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -248,11 +246,11 @@
 
                             <div class="modal fade" id="tambahModal" tabindex="-1">
                                 <div class="modal-dialog">
-                                    <form action="{{ route('pembayaran.store') }}" method="POST">
+                                    <form action="{{ route('jadwal.store') }}" method="POST">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Tambah Pembayaran</h5>
+                                                <h5 class="modal-title">Tambah Jadwal</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
@@ -270,16 +268,12 @@
                                                     <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label>Layanan</label>
-                                                    <input type="text" name="layanan" class="form-control" required>
+                                                    <label>Hari</label>
+                                                    <input type="text" name="hari" class="form-control" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label>Nominal</label>
-                                                    <input type="text" name="nominal" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Jenis Pembayaran</label>
-                                                    <input type="text" name="jns_pembayaran" class="form-control" required>
+                                                    <label>Jam</label>
+                                                    <input type="text" name="jam" class="form-control" required>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-success">Simpan</button>
