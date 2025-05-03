@@ -298,14 +298,6 @@
                                                     <input type="hidden" name="dokter_id" id="dokter_id">
                                                     <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label>Status</label>
-                                                    <select name="status" class="form-control">
-                                                        <option value="Menunggu" selected>Menunggu</option>
-                                                        <option value="Sedang diperiksa">Sedang diperiksa</option>
-                                                        <option value="Selesai">Selesai</option>
-                                                    </select>
-                                                </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-success">Simpan</button>
                                                 </div>
