@@ -9,6 +9,12 @@ Route::resource('pasien', PasienController::class);
 Route::resource('poli', PoliController::class);
 Route::resource('dokter', DokterController::class);
 
+// Route tambahan untuk verifikasi email sebelum akses data dokter
+Route::post('/dokter/verifikasi', [DokterController::class, 'verifikasiEmail'])->name('dokter.verifikasi');
+
+// Route untuk menghapus sesi verifikasi email
+Route::get('/dokter/logoutverifikasi', [DokterController::class, 'logoutVerifikasi'])->name('dokter.logoutverifikasi');
+
 Route::get('/', function () {
     return view('dashboard');
 });

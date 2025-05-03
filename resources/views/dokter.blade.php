@@ -129,55 +129,29 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Dokter</li>
                     </ol>
+
+                    {{-- ALERT ERROR VERIFIKASI EMAIL --}}
+                    @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+
+                    {{-- ALERT EMAIL YANG TERVERIFIKASI --}}
+                    @if(session('verified_email'))
+                    <div class="alert alert-success d-flex justify-content-between align-items-center">
+                        Menampilkan data untuk email dokter: <strong>{{ session('verified_email') }}</strong>
+                        <a href="{{ route('dokter.logoutverifikasi') }}" class="btn btn-sm btn-danger">Verifikasi Ulang</a>
+                    </div>
+                    @endif
+
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             Data Dokter
                         </div>
                         <div class="card-body">
-                            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">+ Tambah Dokter</button>
-
-                            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <form method="POST" action="{{ url('/dokter') }}">
-                                        @csrf
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addModalLabel">Tambah Dokter</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label>Nama</label>
-                                                    <input type="text" name="nama_dokter" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Spesialis</label>
-                                                    <input type="text" name="spesialis" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Status Dokter</label>
-                                                    <select name="sts_dokter" class="form-control" required>
-                                                        <option value="Tersedia">Tersedia</option>
-                                                        <option value="Tidak Tersedia">Tidak Tersedia</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>No HP</label>
-                                                    <input type="text" name="no_hp" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Email</label>
-                                                    <input type="text" name="email" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Tambah</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
 
                             <table id="datatablesSimple">
                                 <thead>
@@ -188,7 +162,6 @@
                                         <th>sts_dokter</th>
                                         <th>No HP</th>
                                         <th>Email</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -200,86 +173,6 @@
                                         <td>{{ $d->sts_dokter }}</td>
                                         <td>{{ $d->no_hp }}</td>
                                         <td>{{ $d->email }}</td>
-                                        <td>
-                                            <!-- Tombol Edit dan Delete -->
-                                            <form action="{{ url('/dokter/' . $d->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $d->id }}">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $d->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $d->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form action="{{ route('dokter.destroy', $d->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $d->id }}">Konfirmasi Hapus</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data dokter <strong>{{ $d->nama_dokter }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-
-                                            <!-- Tombol untuk modal edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $d->id }}">Edit</button>
-
-                                            <!-- Modal Edit -->
-                                            <div class="modal fade" id="editModal{{ $d->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $d->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form method="POST" action="{{ url('/dokter/' . $d->id) }}">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="editModalLabel{{ $d->id }}">Edit Dokter</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="mb-3">
-                                                                    <label>Nama</label>
-                                                                    <input type="text" name="nama_dokter" class="form-control" value="{{ $d->nama_dokter }}" required>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label>Spesialis</label>
-                                                                    <input type="text" name="spesialis" class="form-control" value="{{ $d->spesialis }}" required>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label>Status Dokter</label>
-                                                                    <select name="sts_dokter" class="form-control" required>
-                                                                        <option value="Tersedia" {{ $d->sts_dokter == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                                                        <option value="Tidak Tersedia" {{ $d->sts_dokter == 'Tidak Tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label>No HP</label>
-                                                                    <input type="text" name="no_hp" class="form-control" value="{{ $d->no_hp }}" required>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label>Email</label>
-                                                                    <input type="text" name="email" class="form-control" value="{{ $d->email }}" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -297,6 +190,7 @@
             </footer>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -304,6 +198,37 @@
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/datatables-simple-demo.js') }}"></script>
+
+    <!-- Modal Verifikasi Email -->
+    <div class="modal fade" id="verifikasiEmailModal" tabindex="-1" aria-labelledby="verifikasiEmailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('dokter.verifikasi') }}">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verifikasiEmailModalLabel">Verifikasi Email Dokter</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Masukkan email dokter untuk melihat datanya.</p>
+                        <input type="email" name="email" class="form-control" required placeholder="Contoh: bima@gmail.com">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Verifikasi</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        @if(!session('verified_email'))
+        window.addEventListener('DOMContentLoaded', function() {
+            var verifikasiModal = new bootstrap.Modal(document.getElementById('verifikasiEmailModal'));
+            verifikasiModal.show();
+        });
+        @endif
+    </script>
+
 </body>
 
 </html>
