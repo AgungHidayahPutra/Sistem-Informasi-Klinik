@@ -293,7 +293,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Nominal</label>
-                                                    <input type="text" name="nominal" class="form-control" required>
+                                                    <input type="number" name="nominal" class="form-control" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Jenis Pembayaran</label>
