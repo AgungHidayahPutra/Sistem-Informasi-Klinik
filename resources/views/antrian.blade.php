@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         @font-face {
@@ -278,20 +279,20 @@
                                             <div class="modal-body">
                                                 <div class="mb-3 position-relative">
                                                     <label>Pasien</label>
-                                                    <input type="text" name="pasien_nama" id="pasien_nama" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="" autocomplete="off">
                                                     <input type="hidden" name="pasien_id" id="pasien_id">
                                                     <div id="list_pasien" class="list-group position-absolute w-100 z-10"></div>
                                                 </div>
 
                                                 <div class="mb-3 position-relative">
                                                     <label>Poli</label>
-                                                    <input type="text" name="poli_nama" id="poli_nama" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="text" name="nama_poli" id="nama_poli" class="form-control" placeholder="" autocomplete="off">
                                                     <input type="hidden" name="poli_id" id="poli_id">
                                                     <div id="list_poli" class="list-group position-absolute w-100 z-10"></div>
                                                 </div>
                                                 <div class="mb-3 position-relative">
                                                     <label>Dokter</label>
-                                                    <input type="text" name="dokter_nama" id="dokter_nama" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="text" name="nama_dokter" id="nama_dokter" class="form-control" placeholder="" autocomplete="off">
                                                     <input type="hidden" name="dokter_id" id="dokter_id">
                                                     <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
                                                     <div class="mb-3">
@@ -354,9 +355,9 @@
         }
 
         $(document).ready(function() {
-            autocompleteInput('pasien_nama', 'list_pasien', 'pasien_id', '/autocomplete/pasien');
-            autocompleteInput('poli_nama', 'list_poli', 'poli_id', '/autocomplete/poli');
-            autocompleteInput('dokter_nama', 'list_dokter', 'dokter_id', '/autocomplete/dokter');
+            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocomplete/pasien');
+            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocomplete/poli');
+            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocomplete/dokter');
         });
     </script>
 
@@ -367,6 +368,15 @@
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/datatables-simple-demo.js') }}"></script>
+    @if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "{{ session('error') }}"
+        });
+    </script>
+@endif
 </body>
 
 </html>
