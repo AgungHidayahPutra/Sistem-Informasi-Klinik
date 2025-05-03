@@ -14,7 +14,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-
 Route::resource('pasien', PasienController::class);
 Route::resource('poli', PoliController::class);
 Route::resource('dokter', DokterController::class)->except(['show']);
