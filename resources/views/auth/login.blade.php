@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Bank SumselBabel</title>
-    <link rel="icon" href="{{ asset('assets/img/logo-bsb.svg') }}" type="image/svg+xml" />
+    <title>Klinik Pangeran</title>
+    <link rel="icon" href="{{ asset('assets/images/logo-klinik.svg') }}" type="image/svg+xml" />
     <link href="{{ asset('assets/css/login.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
