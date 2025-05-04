@@ -103,7 +103,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-calendar-days"></i></div>
                             Jadwal
                         </a>
-                        <a class="nav-link text-lavender" href="/dokter">
+                        <a class="nav-link text-lavender" href="/data-dokter">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>

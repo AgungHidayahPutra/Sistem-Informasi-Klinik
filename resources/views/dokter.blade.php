@@ -159,20 +159,20 @@
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Spesialis</th>
-                                        <th>sts_dokter</th>
+                                        <th>Status Dokter</th>
                                         <th>No HP</th>
                                         <th>Email</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dokter as $index => $d)
+                                    @foreach ($dokters as $index => $dokter)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $d->nama_dokter }}</td>
-                                        <td>{{ $d->spesialis }}</td>
-                                        <td>{{ $d->sts_dokter }}</td>
-                                        <td>{{ $d->no_hp }}</td>
-                                        <td>{{ $d->email }}</td>
+                                        <td>{{ $dokter->nama_dokter }}</td>
+                                        <td>{{ $dokter->spesialis }}</td>
+                                        <td>{{ $dokter->sts_dokter }}</td>
+                                        <td>{{ $dokter->no_hp }}</td>
+                                        <td>{{ $dokter->email }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

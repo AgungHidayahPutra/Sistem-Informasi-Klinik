@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Poli | Admin</title>
+    <title>Dokter | Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         @font-face {
@@ -46,6 +47,14 @@
 
         .active {
             text-decoration: underline;
+        }
+
+        .list-group {
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            z-index: 999;
         }
     </style>
 </head>
@@ -107,11 +116,11 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
-                        <a class="nav-link text-lavender active" href="/poli">
+                        <a class="nav-link text-lavender" href="/poli">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
                             Poli
                         </a>
-                        <a class="nav-link text-lavender" href="/antrian">
+                        <a class="nav-link text-lavender active" href="/antrian">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian
                         </a>
@@ -130,77 +139,66 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Poli</h1>
+                    <h1 class="mt-4">Antrian</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Poli</li>
+                        <li class="breadcrumb-item active">Antrian</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Data Poli
+                            Data Antrian
                         </div>
                         <div class="card-body">
-                            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Tambah Poli</button>
 
-                            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <form method="POST" action="{{ url('/poli') }}">
-                                        @csrf
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addModalLabel">Tambah Poli</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label>Nama Poli</label>
-                                                    <input type="text" name="nama_poli" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Tambah</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Antrian</button>
 
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Poli</th>
+                                        <th>Nama</th>
+                                        <th>Spesialis</th>
+                                        <th>Status Dokter</th>
+                                        <th>No HP</th>
+                                        <th>Email</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($poli as $index => $p)
+                                    @foreach ($dokters as $index => $dokter)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $p->nama_poli }}</td>
+                                        <td>{{ $dokter->nama_dokter }}</td>
+                                        <td>{{ $dokter->spesialis }}</td>
+                                        <td>{{ $dokter->sts_dokter }}</td>
+                                        <td>{{ $dokter->no_hp }}</td>
+                                        <td>{{ $dokter->email }}</td>
                                         <td>
-                                            <!-- Tombol Edit dan Delete -->
-                                            <form action="{{ url('/poli/' . $p->id) }}" method="POST" style="display:inline-block;">
+                                            <!-- Edit -->
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $dokter->id }}">Edit</button>
+
+                                            <!-- Hapus -->
+                                            <form action="{{ url('/dokter/' . $dokter->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $p->id }}">
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $dokter->id }}">
                                                     Delete
                                                 </button>
                                             </form>
 
                                             <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $p->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $p->id }}" aria-hidden="true">
+                                            <div class="modal fade" id="deleteModal{{ $dokter->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $dokter->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
-                                                    <form action="{{ route('poli.destroy', $p->id) }}" method="POST">
+                                                    <form action="{{ route('data-dokter.destroy', $dokter->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $p->id }}">Konfirmasi Hapus</h5>
+                                                                <h5 class="modal-title" id="deleteModalLabel{{ $dokter->id }}">Konfirmasi Hapus</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data poli <strong>{{ $p->nama_poli }}</strong>?
+                                                                Apakah Anda yakin ingin menghapus data dokter <strong>{{ $dokter->nama_dokter }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -210,39 +208,96 @@
                                                     </form>
                                                 </div>
                                             </div>
-
-                                            <!-- Tombol untuk modal edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $p->id }}">Edit</button>
-
-                                            <!-- Modal Edit -->
-                                            <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $p->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form method="POST" action="{{ url('/poli/' . $p->id) }}">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="editModalLabel{{ $p->id }}">Edit Poli</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="mb-3">
-                                                                    <label>Nama Poli</label>
-                                                                    <input type="text" name="nama_poli" class="form-control" value="{{ $p->nama_poli }}" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
+
+                                    <!-- Modal Edit -->
+                                    <div class="modal fade" id="editModal{{ $dokter->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <form action="{{ route('data-dokter.update', $dokter->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Dokter</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label>Nama Dokter</label>
+                                                            <input type="text" name="layanan" class="form-control" value="{{ $dokter->nama_dokter }}">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Spesialis</label>
+                                                            <input type="text" name="layanan" class="form-control" value="{{ $dokter->spesialis }}">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Status Dokter</label>
+                                                            <select name="sts_dokter" class="form-control" required>
+                                                                <option value="Tersedia" {{ $dokter->sts_dokter == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
+                                                                <option value="Tidak Tersedia" {{ $dokter->sts_dokter == 'Tidak Tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>No HP</label>
+                                                            <input type="text" name="no_hp" class="form-control" value="{{ $dokter->no_hp }}">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Email</label>
+                                                            <input type="text" name="email" class="form-control" value="{{ $dokter->email }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-success">Simpan Perubahan</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                     @endforeach
                                 </tbody>
                             </table>
+
+                            <div class="modal fade" id="tambahModal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <form action="{{ route('data-dokter.store') }}" method="POST">
+                                        @csrf
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Tambah Dokter</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label>Nama Dokter</label>
+                                                    <input type="text" name="nama_dokter" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Spesialis</label>
+                                                    <input type="text" name="spesial" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Status Dokter</label>
+                                                    <select name="sts_dokter" class="form-control" required>
+                                                        <option value="Tersedia">Tersedia</option>
+                                                        <option value="Tidak Tersedia">Tidak Tersedia</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>No HP</label>
+                                                    <input type="text" name="no_hp" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Email</label>
+                                                    <input type="text" name="email" class="form-control" required>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-success">Simpan</button>
+                                                </div>
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,6 +311,7 @@
             </footer>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -263,6 +319,15 @@
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/datatables-simple-demo.js') }}"></script>
+    @if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "{{ session('error') }}"
+        });
+    </script>
+    @endif
 </body>
 
 </html>

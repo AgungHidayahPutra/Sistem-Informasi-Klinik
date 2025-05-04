@@ -10,6 +10,7 @@ use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\RekamMedisController;
+use App\Http\Controllers\VerifikasiDokterController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -25,15 +26,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('pasien', PasienController::class);
     Route::resource('poli', PoliController::class);
-    Route::resource('dokter', DokterController::class)->except(['show']);
+    Route::resource('data-dokter', DokterController::class);
+    // Route::resource('dokter', VerifikasiDokterController::class)->except(['show']);
     Route::resource('antrian', AntrianController::class);
     Route::resource('pembayaran', PembayaranController::class);
     Route::resource('jadwal', JadwalController::class);
     Route::resource('rekam-medis', RekamMedisController::class);
 
     // Route tambahan untuk verifikasi email sebelum akses data dokter
-    Route::post('/dokter/verifikasi', [DokterController::class, 'verifikasiEmail'])->name('dokter.verifikasi');
-    Route::get('/dokter/logoutverifikasi', [DokterController::class, 'logoutVerifikasi'])->name('dokter.logoutverifikasi');
+    Route::post('/dokter/verifikasi', [VerifikasiDokterController::class, 'verifikasiEmail'])->name('dokter.verifikasi');
+    Route::get('/dokter/logoutverifikasi', [VerifikasiDokterController::class, 'logoutVerifikasi'])->name('dokter.logoutverifikasi');
 
     // Autocomplete routes
     Route::get('/autocompleteantrian/pasien', [AntrianController::class, 'autocompletePasien']);

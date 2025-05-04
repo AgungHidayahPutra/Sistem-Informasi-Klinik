@@ -4,36 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Dokter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class DokterController extends Controller
 {
     public function index(Request $request)
     {
-        $email = Session::get('verified_email');
+        $role = Auth::user()->role;
 
-        if ($email) {
-            $dokter = Dokter::where('email', $email)->get();
-        } else {
-            $dokter = []; // Kosong jika belum verifikasi
+        if (!in_array($role, ['admin', 'resepsionis'])) {
+            abort(403, 'Akses ditolak');
         }
 
-        return view('dokter', compact('dokter'));
-    }
-
-    public function verifikasiEmail(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email'
-        ]);
-
-        $dokter = Dokter::where('email', $request->email)->first();
-
-        if ($dokter) {
-            Session::put('verified_email', $request->email);
-            return redirect()->route('dokter.index');
+        $dokter = Dokter::all();
+        if ($role === 'admin') {
+            return view('admin.data-dokter', compact('dokters'));
         } else {
-            return back()->with('error', 'Email tidak ditemukan di data dokter.');
+            return view('resepsionis.data-dokter', compact('dokters'));
         }
     }
 
@@ -48,7 +35,7 @@ class DokterController extends Controller
         ]);
 
         Dokter::create($request->all());
-        return redirect('/dokter')->with('success', 'Data berhasil ditambahkan!');
+        return redirect('/data-dokter')->with('success', 'Data berhasil ditambahkan!');
     }
 
     public function update(Request $request, Dokter $dokter)
@@ -62,18 +49,13 @@ class DokterController extends Controller
         ]);
 
         $dokter->update($request->all());
-        return redirect('/dokter')->with('success', 'Data berhasil diperbarui!');
+        return redirect('/data-dokter')->with('success', 'Data berhasil diperbarui!');
     }
 
     public function destroy(Dokter $dokter)
     {
         $dokter->delete();
-        return redirect('/dokter')->with('success', 'Data berhasil dihapus!');
+        return redirect('/data-dokter')->with('success', 'Data berhasil dihapus!');
     }
 
-    public function logoutVerifikasi()
-    {
-        Session::forget('verified_email');
-        return redirect()->route('dokter.index');
-    }
 }
