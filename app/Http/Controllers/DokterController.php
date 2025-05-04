@@ -16,11 +16,11 @@ class DokterController extends Controller
             abort(403, 'Akses ditolak');
         }
 
-        $datadokter = Dokter::all();
+        $dokters = Dokter::all();
         if ($role === 'admin') {
-            return view('admin.data-dokter', compact('datadokter'));
+            return view('admin.data-dokter', compact('s'));
         } else {
-            return view('resepsionis.data-dokter', compact('datadokter'));
+            return view('resepsionis.data-dokter', compact('s'));
         }
     }
 

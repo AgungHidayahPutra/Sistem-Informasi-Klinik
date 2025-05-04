@@ -165,7 +165,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($datadokter as $index => $dokter)
+                                    @foreach ($dokters as $index => $dokter)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $dokter->nama_dokter }}</td>
