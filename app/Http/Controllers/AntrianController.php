@@ -7,18 +7,30 @@ use App\Models\Pasien;
 use App\Models\Dokter;
 use App\Models\Poli;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AntrianController extends Controller
 {
     public function index()
     {
+
+        $role = Auth::user()->role;
+
+        if (!in_array($role, ['dokter', 'resepsionis'])) {
+            abort(403, 'Akses ditolak');
+        }
+
         $antrians = Antrian::with(['pasien', 'dokter', 'poli'])->get();
         $pasiens = Pasien::all();
         $dokters = Dokter::all();
         $polis = Poli::all();
         $statuses = ['Menunggu', 'Sedang diperiksa', 'Selesai'];
 
-        return view('antrian', compact('antrians', 'pasiens', 'dokters', 'polis', 'statuses'));
+        if ($role === 'dokter') {
+            return view('dokter.antrian', compact('antrians', 'pasiens', 'dokters', 'polis', 'statuses'));
+        } else {
+            return view('resepsionis.antrian', compact('antrians', 'pasiens', 'dokters', 'polis', 'statuses'));
+        }
     }
 
     public function store(Request $request)

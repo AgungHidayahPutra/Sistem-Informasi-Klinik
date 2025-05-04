@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pembayaran | Admin</title>
+    <title>Antrian | Resepsionis</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -35,7 +35,6 @@
 
         .bg-blue {
             background-image: linear-gradient(to bottom, #004AAD, #004AAD, #5080FD);
-            /* background-color: #004AAD; */
         }
 
         .logo {
@@ -96,7 +95,7 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark bg-blue" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading text-lavender">Admin</div>
+                        <div class="sb-sidenav-menu-heading text-lavender">Resepsionis</div>
                         <a class="nav-link text-lavender" href="/dashboard">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
@@ -121,11 +120,11 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
                             Poli
                         </a>
-                        <a class="nav-link text-lavender" href="/antrian">
+                        <a class="nav-link text-lavender active" href="/antrian">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian
                         </a>
-                        <a class="nav-link text-lavender active" href="/pembayaran">
+                        <a class="nav-link text-lavender" href="/pembayaran">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
@@ -140,66 +139,64 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Pembayaran</h1>
+                    <h1 class="mt-4">Antrian</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Pembayaran</li>
+                        <li class="breadcrumb-item active">Antrian</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Data Pembayaran
+                            Data Antrian
                         </div>
                         <div class="card-body">
+
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Antrian</button>
 
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Pasien</th>
+                                        <th>Nama Poli</th>
                                         <th>Nama Dokter</th>
-                                        <th>Layanan</th>
-                                        <th>Nominal</th>
-                                        <th>Jenis Pembayaran</th>
-                                        <th>Tanggal Pembayaran</th>
+                                        <th>Status Antrian</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($pembayarans as $index => $pembayaran)
+                                    @foreach ($antrians as $index => $antrian)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $pembayaran->pasien->nama_pasien }}</td>
-                                        <td>{{ $pembayaran->dokter->nama_dokter }}</td>
-                                        <td>{{ $pembayaran->layanan }}</td>
-                                        <td>{{ $pembayaran->nominal }}</td>
-                                        <td>{{ $pembayaran->jns_pembayaran }}</td>
-                                        <td>{{ $pembayaran->tgl_pembayaran }}</td>
+                                        <td>{{ $antrian->pasien->nama_pasien }}</td>
+                                        <td>{{ $antrian->poli->nama_poli }}</td>
+                                        <td>{{ $antrian->dokter->nama_dokter }}</td>
+                                        <td>{{ $antrian->status }}</td>
                                         <td>
                                             <!-- Edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $pembayaran->id }}">Edit</button>
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $antrian->id }}">Edit</button>
 
                                             <!-- Hapus -->
-                                            <form action="{{ url('/pembayaran/' . $pembayaran->id) }}" method="POST" style="display:inline-block;">
+                                            <form action="{{ url('/antrian/' . $antrian->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $pembayaran->id }}">
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $antrian->id }}">
                                                     Delete
                                                 </button>
                                             </form>
 
                                             <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $pembayaran->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $pembayaran->id }}" aria-hidden="true">
+                                            <div class="modal fade" id="deleteModal{{ $antrian->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $antrian->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
-                                                    <form action="{{ route('pembayaran.destroy', $pembayaran->id) }}" method="POST">
+                                                    <form action="{{ route('antrian.destroy', $antrian->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $pembayaran->id }}">Konfirmasi Hapus</h5>
+                                                                <h5 class="modal-title" id="deleteModalLabel{{ $antrian->id }}">Konfirmasi Hapus</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data pembayaran pasien <strong>{{ $pembayaran->pasien->nama_pasien }}</strong>?
+                                                                Apakah Anda yakin ingin menghapus antrian pasien <strong>{{ $antrian->pasien->nama_pasien }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -213,52 +210,61 @@
                                     </tr>
 
                                     <!-- Modal Edit -->
-                                    <div class="modal fade" id="editModal{{ $pembayaran->id }}" tabindex="-1">
+                                    <div class="modal fade" id="editModal{{ $antrian->id }}" tabindex="-1">
                                         <div class="modal-dialog">
-                                            <form action="{{ route('pembayaran.update', $pembayaran->id) }}" method="POST">
+                                            <form action="{{ route('antrian.update', $antrian->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Pembayaran</h5>
+                                                        <h5 class="modal-title">Edit Antrian</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="mb-2">
+
+                                                        <div class="mb-3">
                                                             <label>Pasien</label>
-                                                            <select name="pasien_id" class="form-control">
+                                                            <select name="pasien_id" class="form-control" required>
                                                                 @foreach($pasiens as $pasien)
-                                                                <option value="{{ $pasien->id }}" {{ $pembayaran->pasien_id == $pasien->id ? 'selected' : '' }}>
+                                                                <option value="{{ $pasien->id }}" {{ $antrian->pasien_id == $pasien->id ? 'selected' : '' }}>
                                                                     {{ $pasien->nama_pasien }}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="mb-2">
+                                                            <label>Poli</label>
+                                                            <select name="poli_id" class="form-control">
+                                                                @foreach($polis as $poli)
+                                                                <option value="{{ $poli->id }}" {{ $antrian->poli_id == $poli->id ? 'selected' : '' }}>
+                                                                    {{ $poli->nama_poli }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label>Dokter</label>
-                                                            <select name="dokter_id" class="form-control">
+                                                            <select name="dokter_id" class="form-control" required>
                                                                 @foreach($dokters as $dokter)
-                                                                <option value="{{ $dokter->id }}" {{ $pembayaran->dokter_id == $dokter->id ? 'selected' : '' }}>
+                                                                <option value="{{ $dokter->id }}" {{ $antrian->dokter_id == $dokter->id ? 'selected' : '' }}>
                                                                     {{ $dokter->nama_dokter }}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label>Nominal</label>
-                                                            <input type="number" name="nominal" class="form-control" value="{{ $pembayaran->nominal }}">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Layanan</label>
-                                                            <input type="text" name="layanan" class="form-control" value="{{ $pembayaran->layanan }}">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Jenis Pembayaran</label>
-                                                            <input type="text" name="jns_pembayaran" class="form-control" value="{{ $pembayaran->jns_pembayaran }}">
+                                                            <label>Status</label>
+                                                            <select name="status" class="form-control">
+                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
+                                                                <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
+                                                                    {{ $status }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button class="btn btn-primary">Simpan Perubahan</button>
+                                                        <button class="btn btn-success">Simpan Perubahan</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -268,6 +274,42 @@
                                 </tbody>
                             </table>
 
+                            <div class="modal fade" id="tambahModal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <form action="{{ route('antrian.store') }}" method="POST">
+                                        @csrf
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Tambah Antrian</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 position-relative">
+                                                    <label>Pasien</label>
+                                                    <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="hidden" name="pasien_id" id="pasien_id">
+                                                    <div id="list_pasien" class="list-group position-absolute w-100 z-10"></div>
+                                                </div>
+
+                                                <div class="mb-3 position-relative">
+                                                    <label>Poli</label>
+                                                    <input type="text" name="nama_poli" id="nama_poli" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="hidden" name="poli_id" id="poli_id">
+                                                    <div id="list_poli" class="list-group position-absolute w-100 z-10"></div>
+                                                </div>
+                                                <div class="mb-3 position-relative">
+                                                    <label>Dokter</label>
+                                                    <input type="text" name="nama_dokter" id="nama_dokter" class="form-control" placeholder="" autocomplete="off">
+                                                    <input type="hidden" name="dokter_id" id="dokter_id">
+                                                    <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-success">Simpan</button>
+                                                </div>
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,8 +354,9 @@
         }
 
         $(document).ready(function() {
-            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompletepembayaran/pasien');
-            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompletepembayaran/dokter');
+            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompleteantrian/pasien');
+            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocompleteantrian/poli');
+            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompleteantrian/dokter');
         });
     </script>
 
