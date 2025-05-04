@@ -183,41 +183,11 @@
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Antrian</h5>
+                                                        <h5 class="modal-title">Ubah Status</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
 
-                                                        <div class="mb-3">
-                                                            <label>Pasien</label>
-                                                            <select name="pasien_id" class="form-control" required>
-                                                                @foreach($pasiens as $pasien)
-                                                                <option value="{{ $pasien->id }}" {{ $antrian->pasien_id == $pasien->id ? 'selected' : '' }}>
-                                                                    {{ $pasien->nama_pasien }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-2">
-                                                            <label>Poli</label>
-                                                            <select name="poli_id" class="form-control">
-                                                                @foreach($polis as $poli)
-                                                                <option value="{{ $poli->id }}" {{ $antrian->poli_id == $poli->id ? 'selected' : '' }}>
-                                                                    {{ $poli->nama_poli }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Dokter</label>
-                                                            <select name="dokter_id" class="form-control" required>
-                                                                @foreach($dokters as $dokter)
-                                                                <option value="{{ $dokter->id }}" {{ $antrian->dokter_id == $dokter->id ? 'selected' : '' }}>
-                                                                    {{ $dokter->nama_dokter }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
                                                         <div class="mb-3">
                                                             <label>Status</label>
                                                             <select name="status" class="form-control">
