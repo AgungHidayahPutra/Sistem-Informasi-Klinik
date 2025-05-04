@@ -121,7 +121,7 @@
                 </div>
                 <div class="sb-sidenav-footer bg-white text-dark">
                     <div class="small">Logged in as:</div>
-                    Start Bootstrap
+                    {{ Auth::user()->username }}
                 </div>
             </nav>
         </div>
