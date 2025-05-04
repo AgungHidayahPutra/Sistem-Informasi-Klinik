@@ -42,6 +42,6 @@ Route::get('/autocompletepembayaran/dokter', [PembayaranController::class, 'auto
 
 Route::get('/autocompletejadwal/dokter', [JadwalController::class, 'autocompleteDokter']);
 
-Route::get('/autocomplete/pasien', [RekamMedisController::class, 'autocompletePasien']);
-Route::get('/autocomplete/poli', [RekamMedisController::class, 'autocompletePoli']);
-Route::get('/autocomplete/dokter', [RekamMedisController::class, 'autocompleteDokter']);
+Route::get('/autocompleterekammedis/pasien', [RekamMedisController::class, 'autocompletePasien']);
+Route::get('/autocompleterekammedis/poli', [RekamMedisController::class, 'autocompletePoli']);
+Route::get('/autocompleterekammedis/dokter', [RekamMedisController::class, 'autocompleteDokter']);

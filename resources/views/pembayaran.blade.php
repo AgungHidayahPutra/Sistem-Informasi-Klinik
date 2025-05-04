@@ -240,15 +240,15 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="mb-2">
+                                                        <div class="mb-3">
                                                             <label>Nominal</label>
                                                             <input type="number" name="nominal" class="form-control" value="{{ $pembayaran->nominal }}">
                                                         </div>
-                                                        <div class="mb-2">
+                                                        <div class="mb-3">
                                                             <label>Layanan</label>
                                                             <input type="text" name="layanan" class="form-control" value="{{ $pembayaran->layanan }}">
                                                         </div>
-                                                        <div class="mb-2">
+                                                        <div class="mb-3">
                                                             <label>Jenis Pembayaran</label>
                                                             <input type="text" name="jns_pembayaran" class="form-control" value="{{ $pembayaran->jns_pembayaran }}">
                                                         </div>
