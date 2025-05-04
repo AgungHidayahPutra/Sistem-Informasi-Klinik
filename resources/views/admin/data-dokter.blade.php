@@ -112,7 +112,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-calendar-days"></i></div>
                             Jadwal
                         </a>
-                        <a class="nav-link text-lavender" href="/data-dokter">
+                        <a class="nav-link text-lavender active" href="/data-dokter">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
@@ -120,7 +120,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
                             Poli
                         </a>
-                        <a class="nav-link text-lavender active" href="/antrian">
+                        <a class="nav-link text-lavender" href="/antrian">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian
                         </a>
@@ -139,14 +139,14 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Antrian</h1>
+                    <h1 class="mt-4">Dokter</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Antrian</li>
+                        <li class="breadcrumb-item active">Dokter</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Data Antrian
+                            Data Dokter
                         </div>
                         <div class="card-body">
 
