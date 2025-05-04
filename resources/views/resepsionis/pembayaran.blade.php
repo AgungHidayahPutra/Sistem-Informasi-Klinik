@@ -162,7 +162,6 @@
                                         <th>Nominal</th>
                                         <th>Jenis Pembayaran</th>
                                         <th>Tanggal Pembayaran</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
