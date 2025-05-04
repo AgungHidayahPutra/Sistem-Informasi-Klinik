@@ -8,6 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Jadwal | Dokter</title>
+    <link rel="icon" href="{{ asset('assets/images/logo-klinik.svg') }}" type="image/svg+xml" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -100,6 +101,10 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
+                        <a class="nav-link text-lavender" href="/pasien">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-hospital-user"></i></div>
+                            Pasien
+                        </a>
                         <a class="nav-link text-lavender" href="/rekam-medis">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
@@ -112,9 +117,17 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
+                        <a class="nav-link text-lavender" href="/poli">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
+                            Poli
+                        </a>
                         <a class="nav-link text-lavender" href="/antrian">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian
+                        </a>
+                        <a class="nav-link text-lavender" href="/pembayaran">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
+                            Pembayaran
                         </a>
                     </div>
                 </div>
