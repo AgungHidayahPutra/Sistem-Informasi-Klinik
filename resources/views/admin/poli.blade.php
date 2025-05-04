@@ -140,7 +140,7 @@
                             Data Poli
                         </div>
                         <div class="card-body">
-                            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">+ Tambah Poli</button>
+                            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Tambah Poli</button>
 
                             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">

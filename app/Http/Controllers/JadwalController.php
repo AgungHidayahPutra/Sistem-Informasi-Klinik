@@ -5,15 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Jadwal;
 use App\Models\Dokter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JadwalController extends Controller
 {
     public function index()
     {
+
+        $role = Auth::user()->role;
+
+        if (!in_array($role, ['dokter', 'resepsionis'])) {
+            abort(403, 'Akses ditolak');
+        }
+
         $jadwals = Jadwal::with(['dokter'])->get();
         $dokters = Dokter::all();
 
-        return view('jadwal', compact('jadwals', 'dokters'));
+        if ($role === 'dokter') {
+            return view('dokter.jadwal', compact('jadwals', 'dokters'));
+        } else {
+            return view('resepsionis.jadwal', compact('jadwals', 'dokters'));
+        }
     }
 
     public function store(Request $request)

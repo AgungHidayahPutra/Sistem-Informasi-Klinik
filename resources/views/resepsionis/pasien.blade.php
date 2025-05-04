@@ -99,6 +99,18 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
                         </a>
+                        <a class="nav-link text-lavender" href="/jadwal">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-calendar-days"></i></div>
+                            Jadwal
+                        </a>
+                        <a class="nav-link text-lavender" href="/dokter">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
+                            Dokter
+                        </a>
+                        <a class="nav-link text-lavender" href="/poli">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
+                            Poli
+                        </a>
                         <a class="nav-link text-lavender" href="/antrian">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Antrian | Resepsionis</title>
+    <title>Rekam Medis | Dokter</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -95,8 +95,8 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark bg-blue" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading text-lavender">Resepsionis</div>
-                        <a class="nav-link text-lavender" href="/dashboard">
+                        <div class="sb-sidenav-menu-heading text-lavender">Dokter</div>
+                        <a class="nav-link text-lavender" href="/dasboard">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
@@ -104,7 +104,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-hospital-user"></i></div>
                             Pasien
                         </a>
-                        <a class="nav-link text-lavender" href="/rekam-medis">
+                        <a class="nav-link text-lavender active" href="/rekam-medis">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
                         </a>
@@ -120,7 +120,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
                             Poli
                         </a>
-                        <a class="nav-link text-lavender active" href="/antrian">
+                        <a class="nav-link text-lavender" href="/antrian">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
                             Antrian
                         </a>
@@ -139,18 +139,16 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Antrian</h1>
+                    <h1 class="mt-4">Rekam Medis</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Antrian</li>
+                        <li class="breadcrumb-item active">Rekam Medis</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Data Antrian
+                            Data Rekam Medis
                         </div>
                         <div class="card-body">
-
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Antrian</button>
 
                             <table id="datatablesSimple">
                                 <thead>
@@ -159,65 +157,39 @@
                                         <th>Nama Pasien</th>
                                         <th>Nama Poli</th>
                                         <th>Nama Dokter</th>
-                                        <th>Status Antrian</th>
+                                        <th>Keluhan</th>
+                                        <th>Resep Obat</th>
+                                        <th>Penyakit</th>
+                                        <th>Tanggal Daftar</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($antrians as $index => $antrian)
+                                    @foreach ($datarekammedis as $index => $rekammedis)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $antrian->pasien->nama_pasien }}</td>
-                                        <td>{{ $antrian->poli->nama_poli }}</td>
-                                        <td>{{ $antrian->dokter->nama_dokter }}</td>
-                                        <td>{{ $antrian->status }}</td>
+                                        <td>{{ $rekammedis->pasien->nama_pasien }}</td>
+                                        <td>{{ $rekammedis->poli->nama_poli }}</td>
+                                        <td>{{ $rekammedis->dokter->nama_dokter }}</td>
+                                        <td>{{ $rekammedis->keluhan }}</td>
+                                        <td>{{ $rekammedis->resep_obat }}</td>
+                                        <td>{{ $rekammedis->penyakit }}</td>
+                                        <td>{{ $rekammedis->tgl_daftar }}</td>
                                         <td>
                                             <!-- Edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $antrian->id }}">Edit</button>
-
-                                            <!-- Hapus -->
-                                            <form action="{{ url('/antrian/' . $antrian->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $antrian->id }}">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $antrian->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $antrian->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form action="{{ route('antrian.destroy', $antrian->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $antrian->id }}">Konfirmasi Hapus</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus antrian pasien <strong>{{ $antrian->pasien->nama_pasien }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $rekammedis->id }}">Edit</button>
                                         </td>
                                     </tr>
 
                                     <!-- Modal Edit -->
-                                    <div class="modal fade" id="editModal{{ $antrian->id }}" tabindex="-1">
+                                    <div class="modal fade" id="editModal{{ $rekammedis->id }}" tabindex="-1">
                                         <div class="modal-dialog">
-                                            <form action="{{ route('antrian.update', $antrian->id) }}" method="POST">
+                                            <form action="{{ route('rekam-medis.update', $rekammedis->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Antrian</h5>
+                                                        <h5 class="modal-title">Edit Rekam Medis</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -226,7 +198,7 @@
                                                             <label>Pasien</label>
                                                             <select name="pasien_id" class="form-control" required>
                                                                 @foreach($pasiens as $pasien)
-                                                                <option value="{{ $pasien->id }}" {{ $antrian->pasien_id == $pasien->id ? 'selected' : '' }}>
+                                                                <option value="{{ $pasien->id }}" {{ $rekammedis->pasien_id == $pasien->id ? 'selected' : '' }}>
                                                                     {{ $pasien->nama_pasien }}
                                                                 </option>
                                                                 @endforeach
@@ -236,7 +208,7 @@
                                                             <label>Poli</label>
                                                             <select name="poli_id" class="form-control">
                                                                 @foreach($polis as $poli)
-                                                                <option value="{{ $poli->id }}" {{ $antrian->poli_id == $poli->id ? 'selected' : '' }}>
+                                                                <option value="{{ $poli->id }}" {{ $rekammedis->poli_id == $poli->id ? 'selected' : '' }}>
                                                                     {{ $poli->nama_poli }}
                                                                 </option>
                                                                 @endforeach
@@ -246,21 +218,23 @@
                                                             <label>Dokter</label>
                                                             <select name="dokter_id" class="form-control" required>
                                                                 @foreach($dokters as $dokter)
-                                                                <option value="{{ $dokter->id }}" {{ $antrian->dokter_id == $dokter->id ? 'selected' : '' }}>
+                                                                <option value="{{ $dokter->id }}" {{ $rekammedis->dokter_id == $dokter->id ? 'selected' : '' }}>
                                                                     {{ $dokter->nama_dokter }}
                                                                 </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label>Status</label>
-                                                            <select name="status" class="form-control">
-                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
-                                                                <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
-                                                                    {{ $status }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
+                                                            <label>Keluhan</label>
+                                                            <input type="text" name="keluhan" class="form-control" value="{{ $rekammedis->keluhan }}">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Resep Obat</label>
+                                                            <input type="text" name="resep_obat" class="form-control" value="{{ $rekammedis->resep_obat }}">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Penyakit</label>
+                                                            <input type="text" name="penyakit" class="form-control" value="{{ $rekammedis->penyakit }}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -273,43 +247,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
-                            <div class="modal fade" id="tambahModal" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <form action="{{ route('antrian.store') }}" method="POST">
-                                        @csrf
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Tambah Antrian</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3 position-relative">
-                                                    <label>Pasien</label>
-                                                    <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="" autocomplete="off">
-                                                    <input type="hidden" name="pasien_id" id="pasien_id">
-                                                    <div id="list_pasien" class="list-group position-absolute w-100 z-10"></div>
-                                                </div>
-
-                                                <div class="mb-3 position-relative">
-                                                    <label>Poli</label>
-                                                    <input type="text" name="nama_poli" id="nama_poli" class="form-control" placeholder="" autocomplete="off">
-                                                    <input type="hidden" name="poli_id" id="poli_id">
-                                                    <div id="list_poli" class="list-group position-absolute w-100 z-10"></div>
-                                                </div>
-                                                <div class="mb-3 position-relative">
-                                                    <label>Dokter</label>
-                                                    <input type="text" name="nama_dokter" id="nama_dokter" class="form-control" placeholder="" autocomplete="off">
-                                                    <input type="hidden" name="dokter_id" id="dokter_id">
-                                                    <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-success">Simpan</button>
-                                                </div>
-                                            </div>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -354,9 +291,9 @@
         }
 
         $(document).ready(function() {
-            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompleteantrian/pasien');
-            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocompleteantrian/poli');
-            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompleteantrian/dokter');
+            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompleterekammedis/pasien');
+            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocompleterekammedis/poli');
+            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompleterekammedis/dokter');
         });
     </script>
 

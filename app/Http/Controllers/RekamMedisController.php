@@ -7,17 +7,28 @@ use App\Models\Pasien;
 use App\Models\Dokter;
 use App\Models\Poli;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RekamMedisController extends Controller
 {
     public function index()
     {
+        $role = Auth::user()->role;
+
+        if (!in_array($role, ['dokter', 'resepsionis'])) {
+            abort(403, 'Akses ditolak');
+        }
+
         $datarekammedis = RekamMedis::with(['pasien', 'dokter', 'poli'])->get();
         $pasiens = Pasien::all();
         $dokters = Dokter::all();
         $polis = Poli::all();
 
-        return view('rekam-medis', compact('datarekammedis', 'pasiens', 'dokters', 'polis'));
+        if ($role === 'dokter') {
+            return view('dokter.rekam-medis', compact('datarekammedis', 'pasiens', 'dokters', 'polis'));
+        } else {
+            return view('resepsionis.rekam-medis', compact('datarekammedis', 'pasiens', 'dokters', 'polis'));
+        }
     }
 
     public function store(Request $request)

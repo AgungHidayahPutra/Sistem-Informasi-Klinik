@@ -11,12 +11,18 @@ class PoliController extends Controller
     public function index()
     {
 
-        if (Auth::user()->role !== 'admin') {
+        $role = Auth::user()->role;
+
+        if (!in_array($role, ['admin', 'resepsionis'])) {
             abort(403, 'Akses ditolak');
         }
 
         $poli = Poli::all();
-        return view('admin.poli', compact('poli'));
+        if ($role === 'admin') {
+            return view('admin.poli', compact('poli'));
+        } else {
+            return view('resepsionis.poli', compact('poli'));
+        }
     }
 
     public function store(Request $request)
