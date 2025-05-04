@@ -150,7 +150,7 @@
                         </div>
                         <div class="card-body">
 
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Antrian</button>
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Dokter</button>
 
                             <table id="datatablesSimple">
                                 <thead>
@@ -178,7 +178,7 @@
                                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $dokter->id }}">Edit</button>
 
                                             <!-- Hapus -->
-                                            <form action="{{ url('/dokter/' . $dokter->id) }}" method="POST" style="display:inline-block;">
+                                            <form action="{{ url('/data-dokter/' . $dokter->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $dokter->id }}">
@@ -225,11 +225,11 @@
                                                     <div class="modal-body">
                                                         <div class="mb-3">
                                                             <label>Nama Dokter</label>
-                                                            <input type="text" name="layanan" class="form-control" value="{{ $dokter->nama_dokter }}">
+                                                            <input type="text" name="nama_dokter" class="form-control" value="{{ $dokter->nama_dokter }}">
                                                         </div>
                                                         <div class="mb-3">
                                                             <label>Spesialis</label>
-                                                            <input type="text" name="layanan" class="form-control" value="{{ $dokter->spesialis }}">
+                                                            <input type="text" name="spesialis" class="form-control" value="{{ $dokter->spesialis }}">
                                                         </div>
                                                         <div class="mb-3">
                                                             <label>Status Dokter</label>
@@ -274,7 +274,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Spesialis</label>
-                                                    <input type="text" name="spesial" class="form-control" required>
+                                                    <input type="text" name="spesialis" class="form-control" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Status Dokter</label>
