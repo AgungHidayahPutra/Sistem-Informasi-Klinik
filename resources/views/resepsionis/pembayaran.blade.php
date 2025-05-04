@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pembayaran - SB Admin</title>
+    <title>Pembayaran | Resepsionis</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -35,7 +35,6 @@
 
         .bg-blue {
             background-image: linear-gradient(to bottom, #004AAD, #004AAD, #5080FD);
-            /* background-color: #004AAD; */
         }
 
         .logo {
@@ -73,25 +72,32 @@
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user fa-fw"></i>
+                </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li>
-                        <hr class="dropdown-divider" />
+                        <a class="dropdown-item" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
                     </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
                 </ul>
             </li>
         </ul>
+
+        <!-- Form logout tersembunyi -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark bg-blue" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading text-lavender">Admin</div>
-                        <a class="nav-link text-lavender" href="/">
+                        <div class="sb-sidenav-menu-heading text-lavender">Resepsionis</div>
+                        <a class="nav-link text-lavender" href="/dashboard">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
@@ -157,7 +163,6 @@
                                         <th>Nominal</th>
                                         <th>Jenis Pembayaran</th>
                                         <th>Tanggal Pembayaran</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -170,96 +175,7 @@
                                         <td>{{ $pembayaran->nominal }}</td>
                                         <td>{{ $pembayaran->jns_pembayaran }}</td>
                                         <td>{{ $pembayaran->tgl_pembayaran }}</td>
-                                        <td>
-                                            <!-- Edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $pembayaran->id }}">Edit</button>
-
-                                            <!-- Hapus -->
-                                            <form action="{{ url('/pembayaran/' . $pembayaran->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $pembayaran->id }}">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $pembayaran->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $pembayaran->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form action="{{ route('pembayaran.destroy', $pembayaran->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $pembayaran->id }}">Konfirmasi Hapus</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data pembayaran pasien <strong>{{ $pembayaran->pasien->nama_pasien }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </td>
                                     </tr>
-
-                                    <!-- Modal Edit -->
-                                    <div class="modal fade" id="editModal{{ $pembayaran->id }}" tabindex="-1">
-                                        <div class="modal-dialog">
-                                            <form action="{{ route('pembayaran.update', $pembayaran->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Pembayaran</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="mb-2">
-                                                            <label>Pasien</label>
-                                                            <select name="pasien_id" class="form-control">
-                                                                @foreach($pasiens as $pasien)
-                                                                <option value="{{ $pasien->id }}" {{ $pembayaran->pasien_id == $pasien->id ? 'selected' : '' }}>
-                                                                    {{ $pasien->nama_pasien }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-2">
-                                                            <label>Dokter</label>
-                                                            <select name="dokter_id" class="form-control">
-                                                                @foreach($dokters as $dokter)
-                                                                <option value="{{ $dokter->id }}" {{ $pembayaran->dokter_id == $dokter->id ? 'selected' : '' }}>
-                                                                    {{ $dokter->nama_dokter }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Nominal</label>
-                                                            <input type="number" name="nominal" class="form-control" value="{{ $pembayaran->nominal }}">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Layanan</label>
-                                                            <input type="text" name="layanan" class="form-control" value="{{ $pembayaran->layanan }}">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Jenis Pembayaran</label>
-                                                            <input type="text" name="jns_pembayaran" class="form-control" value="{{ $pembayaran->jns_pembayaran }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-primary">Simpan Perubahan</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
                                     @endforeach
                                 </tbody>
                             </table>

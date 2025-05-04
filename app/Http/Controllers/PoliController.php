@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Poli;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PoliController extends Controller
 {
     public function index()
     {
+
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Akses ditolak');
+        }
+
         $poli = Poli::all();
-        return view('poli', compact('poli'));
+        return view('admin.poli', compact('poli'));
     }
 
     public function store(Request $request)

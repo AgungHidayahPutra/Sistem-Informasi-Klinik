@@ -6,16 +6,27 @@ use App\Models\Pembayaran;
 use App\Models\Pasien;
 use App\Models\Dokter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
     public function index()
     {
+        $role = Auth::user()->role;
+
+        if (!in_array($role, ['admin', 'resepsionis'])) {
+            abort(403, 'Akses ditolak');
+        }
+
         $pembayarans = Pembayaran::with(['pasien', 'dokter'])->get();
         $pasiens = Pasien::all();
         $dokters = Dokter::all();
 
-        return view('pembayaran', compact('pembayarans', 'pasiens', 'dokters'));
+        if ($role === 'admin') {
+            return view('admin.pembayaran', compact('pembayarans', 'pasiens', 'dokters'));
+        } else {
+            return view('resepsionis.pembayaran', compact('pembayarans', 'pasiens', 'dokters'));
+        }
     }
 
     public function store(Request $request)

@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Pasien;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->role !== 'resepsionis') {
+            abort(403, 'Akses ditolak');
+        }
+
         $pasien = Pasien::all();
-        return view('pasien', compact('pasien'));
+        return view('resepsionis.pasien', compact('pasien'));
     }
 
     public function store(Request $request)

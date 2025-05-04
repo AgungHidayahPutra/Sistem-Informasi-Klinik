@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pasien - SB Admin</title>
+    <title>Poli | Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -34,7 +34,6 @@
 
         .bg-blue {
             background-image: linear-gradient(to bottom, #004AAD, #004AAD, #5080FD);
-            /* background-color: #004AAD; */
         }
 
         .logo {
@@ -64,17 +63,24 @@
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user fa-fw"></i>
+                </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li>
-                        <hr class="dropdown-divider" />
+                        <a class="dropdown-item" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
                     </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
                 </ul>
             </li>
         </ul>
+
+        <!-- Form logout tersembunyi -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -82,11 +88,11 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading text-lavender">Admin</div>
-                        <a class="nav-link text-lavender" href="/">
+                        <a class="nav-link text-lavender" href="/dashboard">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link text-lavender active" href="/pasien">
+                        <a class="nav-link text-lavender" href="/pasien">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-hospital-user"></i></div>
                             Pasien
                         </a>
@@ -102,7 +108,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
-                        <a class="nav-link text-lavender" href="/poli">
+                        <a class="nav-link text-lavender active" href="/poli">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
                             Poli
                         </a>
@@ -125,46 +131,31 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Pasien</h1>
+                    <h1 class="mt-4">Poli</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Pasien</li>
+                        <li class="breadcrumb-item active">Poli</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Data Pasien
+                            Data Poli
                         </div>
                         <div class="card-body">
-                            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">+ Tambah Pasien</button>
+                            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">+ Tambah Poli</button>
 
                             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <form method="POST" action="{{ url('/pasien') }}">
+                                    <form method="POST" action="{{ url('/poli') }}">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="addModalLabel">Tambah Pasien</h5>
+                                                <h5 class="modal-title" id="addModalLabel">Tambah Poli</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <label>Nama</label>
-                                                    <input type="text" name="nama_pasien" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Jenis Kelamin</label>
-                                                    <select name="jns_kelamin" class="form-control" required>
-                                                        <option value="Laki-laki">Laki-laki</option>
-                                                        <option value="Perempuan">Perempuan</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Alamat</label>
-                                                    <textarea name="alamat" class="form-control" required></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>No HP</label>
-                                                    <input type="text" name="no_hp" class="form-control" required>
+                                                    <label>Nama Poli</label>
+                                                    <input type="text" name="nama_poli" class="form-control" required>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -179,24 +170,18 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Alamat</th>
-                                        <th>Telepon</th>
+                                        <th>Nama Poli</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($pasien as $index => $p)
+                                    @foreach ($poli as $index => $p)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $p->nama_pasien }}</td>
-                                        <td>{{ $p->jns_kelamin }}</td>
-                                        <td>{{ $p->alamat }}</td>
-                                        <td>{{ $p->no_hp }}</td>
+                                        <td>{{ $p->nama_poli }}</td>
                                         <td>
                                             <!-- Tombol Edit dan Delete -->
-                                            <form action="{{ url('/pasien/' . $p->id) }}" method="POST" style="display:inline-block;">
+                                            <form action="{{ url('/poli/' . $p->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $p->id }}">
@@ -207,7 +192,7 @@
                                             <!-- Modal Konfirmasi Delete -->
                                             <div class="modal fade" id="deleteModal{{ $p->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $p->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
-                                                    <form action="{{ route('pasien.destroy', $p->id) }}" method="POST">
+                                                    <form action="{{ route('poli.destroy', $p->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="modal-content">
@@ -216,7 +201,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data pasien <strong>{{ $p->nama_pasien }}</strong>?
+                                                                Apakah Anda yakin ingin menghapus data poli <strong>{{ $p->nama_poli }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -233,33 +218,18 @@
                                             <!-- Modal Edit -->
                                             <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $p->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
-                                                    <form method="POST" action="{{ url('/pasien/' . $p->id) }}">
+                                                    <form method="POST" action="{{ url('/poli/' . $p->id) }}">
                                                         @csrf
                                                         @method('PUT')
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="editModalLabel{{ $p->id }}">Edit Pasien</h5>
+                                                                <h5 class="modal-title" id="editModalLabel{{ $p->id }}">Edit Poli</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="mb-3">
-                                                                    <label>Nama</label>
-                                                                    <input type="text" name="nama_pasien" class="form-control" value="{{ $p->nama_pasien }}" required>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label>Jenis Kelamin</label>
-                                                                    <select name="jns_kelamin" class="form-control" required>
-                                                                        <option value="Laki-laki" {{ $p->jns_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                                                        <option value="Perempuan" {{ $p->jns_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label>Alamat</label>
-                                                                    <textarea name="alamat" class="form-control" required>{{ $p->alamat }}</textarea>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label>No HP</label>
-                                                                    <input type="text" name="no_hp" class="form-control" value="{{ $p->no_hp }}" required>
+                                                                    <label>Nama Poli</label>
+                                                                    <input type="text" name="nama_poli" class="form-control" value="{{ $p->nama_poli }}" required>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
