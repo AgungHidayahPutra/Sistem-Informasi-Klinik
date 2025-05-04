@@ -96,7 +96,7 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading text-lavender">Dokter</div>
-                        <a class="nav-link text-lavender" href="/dasboard">
+                        <a class="nav-link text-lavender" href="/dashboard">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
