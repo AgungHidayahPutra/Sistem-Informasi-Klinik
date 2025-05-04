@@ -171,7 +171,7 @@
                                         <td>{{ $antrian->status }}</td>
                                         <td>
                                             <!-- Edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $antrian->id }}">Edit</button>
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $antrian->id }}">Ubah Status</button>
                                         </td>
                                     </tr>
 
