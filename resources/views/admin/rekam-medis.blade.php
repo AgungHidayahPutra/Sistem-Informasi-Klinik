@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Rekam Medis | Resepsionis</title>
+    <title>Rekam Medis | Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -95,7 +95,7 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark bg-blue" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading text-lavender">Resepsionis</div>
+                        <div class="sb-sidenav-menu-heading text-lavender">Admin</div>
                         <a class="nav-link text-lavender" href="/dashboard">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
@@ -150,8 +150,6 @@
                         </div>
                         <div class="card-body">
 
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Rekam Medis</button>
-
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
@@ -163,6 +161,7 @@
                                         <th>Resep Obat</th>
                                         <th>Penyakit</th>
                                         <th>Tanggal Daftar</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -176,59 +175,44 @@
                                         <td>{{ $rekammedis->resep_obat }}</td>
                                         <td>{{ $rekammedis->penyakit }}</td>
                                         <td>{{ $rekammedis->tgl_daftar }}</td>
+                                        <td>
+
+                                            <!-- Hapus -->
+                                            <form action="{{ url('/rekammedis/' . $rekammedis->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $rekammedis->id }}">
+                                                    Delete
+                                                </button>
+                                            </form>
+
+                                            <!-- Modal Konfirmasi Delete -->
+                                            <div class="modal fade" id="deleteModal{{ $rekammedis->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $rekammedis->id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <form action="{{ route('rekam-medis.destroy', $rekammedis->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteModalLabel{{ $rekammedis->id }}">Konfirmasi Hapus</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Apakah Anda yakin ingin menghapus data rekam medis pasien <strong>{{ $rekammedis->pasien->nama_pasien }}</strong>?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-
-                            <div class="modal fade" id="tambahModal" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <form action="{{ route('rekam-medis.store') }}" method="POST">
-                                        @csrf
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Tambah Rekam Medis</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3 position-relative">
-                                                    <label>Pasien</label>
-                                                    <input type="text" name="nama_pasien" id="nama_pasien" class="form-control" placeholder="" autocomplete="off">
-                                                    <input type="hidden" name="pasien_id" id="pasien_id">
-                                                    <div id="list_pasien" class="list-group position-absolute w-100 z-10"></div>
-                                                </div>
-
-                                                <div class="mb-3 position-relative">
-                                                    <label>Poli</label>
-                                                    <input type="text" name="nama_poli" id="nama_poli" class="form-control" placeholder="" autocomplete="off">
-                                                    <input type="hidden" name="poli_id" id="poli_id">
-                                                    <div id="list_poli" class="list-group position-absolute w-100 z-10"></div>
-                                                </div>
-                                                <div class="mb-3 position-relative">
-                                                    <label>Dokter</label>
-                                                    <input type="text" name="nama_dokter" id="nama_dokter" class="form-control" placeholder="" autocomplete="off">
-                                                    <input type="hidden" name="dokter_id" id="dokter_id">
-                                                    <div id="list_dokter" class="list-group position-absolute w-100 z-10"></div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Keluhan</label>
-                                                    <input type="text" name="keluhan" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Resep Obat</label>
-                                                    <input type="text" name="resep_obat" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Penyakit</label>
-                                                    <input type="text" name="penyakit" class="form-control" required>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-success">Simpan</button>
-                                                </div>
-                                            </div>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

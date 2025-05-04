@@ -15,7 +15,7 @@ class RekamMedisController extends Controller
     {
         $role = Auth::user()->role;
 
-        if (!in_array($role, ['dokter', 'resepsionis'])) {
+        if (!in_array($role, ['admin', 'dokter', 'resepsionis'])) {
             abort(403, 'Akses ditolak');
         }
 
@@ -24,7 +24,9 @@ class RekamMedisController extends Controller
         $dokters = Dokter::all();
         $polis = Poli::all();
 
-        if ($role === 'dokter') {
+        if ($role === 'admin') {
+            return view('admin.rekam-medis', compact('datarekammedis', 'pasiens', 'dokters', 'polis'));
+        } elseif ($role === 'dokter') {
             return view('dokter.rekam-medis', compact('datarekammedis', 'pasiens', 'dokters', 'polis'));
         } else {
             return view('resepsionis.rekam-medis', compact('datarekammedis', 'pasiens', 'dokters', 'polis'));
