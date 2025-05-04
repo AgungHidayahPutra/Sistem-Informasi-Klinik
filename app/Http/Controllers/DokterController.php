@@ -18,9 +18,9 @@ class DokterController extends Controller
 
         $dokters = Dokter::all();
         if ($role === 'admin') {
-            return view('admin.data-dokter', compact('dokters'));
+            return view('admin.dokter', compact('dokters'));
         } else {
-            return view('resepsionis.data-dokter', compact('dokters'));
+            return view('resepsionis.dokter', compact('dokters'));
         }
     }
 
@@ -35,7 +35,7 @@ class DokterController extends Controller
         ]);
 
         Dokter::create($request->all());
-        return redirect('/data-dokter')->with('success', 'Data berhasil ditambahkan!');
+        return redirect('/dokter')->with('success', 'Data berhasil ditambahkan!');
     }
 
     public function update(Request $request, Dokter $dokter)
@@ -49,13 +49,13 @@ class DokterController extends Controller
         ]);
 
         $dokter->update($request->all());
-        return redirect('/data-dokter')->with('success', 'Data berhasil diperbarui!');
+        return redirect('/dokter')->with('success', 'Data berhasil diperbarui!');
     }
 
     public function destroy(Dokter $dokter)
     {
         $dokter->delete();
-        return redirect('/data-dokter')->with('success', 'Data berhasil dihapus!');
+        return redirect('/dokter')->with('success', 'Data berhasil dihapus!');
     }
 
 }

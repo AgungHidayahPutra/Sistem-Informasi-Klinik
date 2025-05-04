@@ -178,7 +178,7 @@
                                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $dokter->id }}">Edit</button>
 
                                             <!-- Hapus -->
-                                            <form action="{{ url('/data-dokter/' . $dokter->id) }}" method="POST" style="display:inline-block;">
+                                            <form action="{{ url('/dokter/' . $dokter->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $dokter->id }}">
@@ -189,7 +189,7 @@
                                             <!-- Modal Konfirmasi Delete -->
                                             <div class="modal fade" id="deleteModal{{ $dokter->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $dokter->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
-                                                    <form action="{{ route('data-dokter.destroy', $dokter->id) }}" method="POST">
+                                                    <form action="{{ route('dokter.destroy', $dokter->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="modal-content">
@@ -214,7 +214,7 @@
                                     <!-- Modal Edit -->
                                     <div class="modal fade" id="editModal{{ $dokter->id }}" tabindex="-1">
                                         <div class="modal-dialog">
-                                            <form action="{{ route('data-dokter.update', $dokter->id) }}" method="POST">
+                                            <form action="{{ route('dokter.update', $dokter->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-content">
@@ -260,7 +260,7 @@
 
                             <div class="modal fade" id="tambahModal" tabindex="-1">
                                 <div class="modal-dialog">
-                                    <form action="{{ route('data-dokter.store') }}" method="POST">
+                                    <form action="{{ route('dokter.store') }}" method="POST">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
