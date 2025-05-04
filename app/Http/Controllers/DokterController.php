@@ -18,9 +18,9 @@ class DokterController extends Controller
 
         $dokters = Dokter::all();
         if ($role === 'admin') {
-            return view('admin.data-dokter', compact('s'));
+            return view('admin.data-dokter', compact('dokters'));
         } else {
-            return view('resepsionis.data-dokter', compact('s'));
+            return view('resepsionis.data-dokter', compact('dokters'));
         }
     }
 
