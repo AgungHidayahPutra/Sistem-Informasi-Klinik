@@ -13,12 +13,11 @@ class VerifikasiDokterController extends Controller
         $email = Session::get('verified_email');
 
         if ($email) {
-            $dokter = Dokter::where('email', $email)->get();
+            $dokter = Dokter::where('email', $email)->first(); // Ambil satu data dokter
+            return view('dokter.data-dokter', compact('dokter'));
         } else {
-            $dokter = [];
-        }
-
-        return view('dokter', compact('dokter'));
+            return view('dokter.data-dokter');
+        }        
     }
 
     public function verifikasiEmail(Request $request)
@@ -27,11 +26,11 @@ class VerifikasiDokterController extends Controller
             'email' => 'required|email'
         ]);
 
-        $dokter = Dokter::where('email', $request->email)->first();
+        $dokters = Dokter::where('email', $request->email)->first();
 
-        if ($dokter) {
+        if ($dokters) {
             Session::put('verified_email', $request->email);
-            return redirect()->route('dokter.index');
+            return redirect()->route('verifikasi-dokter.index');
         } else {
             return back()->with('error', 'Email tidak ditemukan di data dokter.');
         }
@@ -40,6 +39,6 @@ class VerifikasiDokterController extends Controller
     public function logoutVerifikasi()
     {
         Session::forget('verified_email');
-        return redirect()->route('dokter.index');
+        return redirect()->route('verifikasi-dokter.index');
     }
 }

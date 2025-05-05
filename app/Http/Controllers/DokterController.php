@@ -9,20 +9,23 @@ use Illuminate\Support\Facades\Auth;
 class DokterController extends Controller
 {
     public function index(Request $request)
-    {
-        $role = Auth::user()->role;
-
-        if (!in_array($role, ['admin', 'resepsionis'])) {
-            abort(403, 'Akses ditolak');
-        }
-
-        $dokters = Dokter::all();
-        if ($role === 'admin') {
-            return view('admin.dokter', compact('dokters'));
-        } else {
-            return view('resepsionis.dokter', compact('dokters'));
-        }
+{
+    $role = Auth::user()->role;
+    
+    if (!in_array($role, ['admin', 'resepsionis', 'dokter'])) {
+        abort(403, 'Akses ditolak');
     }
+
+    $dokters = Dokter::all();
+
+    if ($role === 'admin') {
+        return view('admin.dokter', compact('dokters'));
+    } elseif ($role === 'dokter') {
+        return view('dokter.data-dokter', compact('dokters'));
+    } else {
+        return view('resepsionis.dokter', compact('dokters'));
+    }
+}
 
     public function store(Request $request)
     {

@@ -15,6 +15,10 @@ class DashboardController extends Controller
     {
         $role = Auth::user()->role;
 
+        if (!in_array($role, ['admin', 'dokter', 'resepsionis'])) {
+            abort(403, 'Akses ditolak');
+        }
+
         switch ($role) {
             case 'resepsionis':
                 $jumlahMenunggu = Antrian::where('status', 'Menunggu')->count();
@@ -52,6 +56,12 @@ class DashboardController extends Controller
                     'bulanLabels',
                     'jumlahPerBulan'
                 ));
+
+            case 'admin':
+                return view('admin.dashboard');
+
+            case 'dokter':
+                return view('dokter.dashboard');
 
             default:
                 abort(403, 'Akses ditolak');
