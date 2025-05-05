@@ -193,7 +193,7 @@
                                     Data Poli Berdasarkan Rekam Medis
                                 </div>
                                 <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px;"><canvas id="myPieChart"></canvas></div>
-                                <div class="card-footer small text-muted">Updated recentlyM</div>
+                                <div class="card-footer small text-muted">Updated recently</div>
                             </div>
                         </div>
                     </div>
