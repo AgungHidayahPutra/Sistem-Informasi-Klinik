@@ -9,30 +9,28 @@ use Illuminate\Support\Facades\Auth;
 class DokterController extends Controller
 {
     public function index(Request $request)
-{
-    $role = Auth::user()->role;
-    
-    if (!in_array($role, ['admin', 'resepsionis', 'dokter'])) {
-        abort(403, 'Akses ditolak');
-    }
+    {
+        $role = Auth::user()->role;
 
-    $dokters = Dokter::all();
+        if (!in_array($role, ['admin', 'resepsionis', 'dokter'])) {
+            abort(403, 'Akses ditolak');
+        }
 
-    if ($role === 'admin') {
-        return view('admin.dokter', compact('dokters'));
-    } elseif ($role === 'dokter') {
-        return view('dokter.data-dokter', compact('dokters'));
-    } else {
-        return view('resepsionis.dokter', compact('dokters'));
+        $dokters = Dokter::all();
+
+        if ($role === 'admin') {
+            return view('admin.dokter', compact('dokters'));
+        } else {
+            return view('resepsionis.dokter', compact('dokters'));
+        }
     }
-}
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_dokter' => 'required',
             'spesialis' => 'required',
-            'sts_dokter' => 'required',
+            'sts_dokter' => 'Tidak Tersedia',
             'no_hp' => 'required',
             'email' => 'required|email|unique:dokter,email',
         ]);
@@ -52,7 +50,13 @@ class DokterController extends Controller
         ]);
 
         $dokter->update($request->all());
-        return redirect('/dokter')->with('success', 'Data berhasil diperbarui!');
+
+        if (Auth::user()->role === 'dokter') {
+            session(['dokterData' => $dokter]); // Update data session
+            return redirect()->route('dokter.halaman')->with('success', 'Data berhasil diperbarui!');
+        } else {
+            return redirect('/dokter')->with('success', 'Data berhasil diperbarui!');
+        }
     }
 
     public function destroy(Dokter $dokter)
@@ -61,4 +65,42 @@ class DokterController extends Controller
         return redirect('/dokter')->with('success', 'Data berhasil dihapus!');
     }
 
+    // Menampilkan form verifikasi email
+    public function halamanDokter()
+    {
+        $role = Auth::user()->role;
+
+        if ($role !== 'dokter') {
+            abort(403, 'Akses ditolak');
+        }
+
+        $dokterData = session('dokterData');
+
+        return view('dokter.dokter', compact('dokterData'));
+    }
+
+    // Verifikasi email dan tampilkan data dokter yang cocok
+    public function verifikasiEmail(Request $request)
+    {
+        $role = Auth::user()->role;
+
+        if ($role !== 'dokter') {
+            abort(403, 'Akses ditolak');
+        }
+
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $dokter = Dokter::where('email', $request->email)->first();
+
+        if (!$dokter) {
+            return redirect()->route('dokter.halaman')->with('error', 'Email tidak ditemukan!');
+        }
+
+        // Simpan data ke session
+        session(['dokterData' => $dokter]);
+
+        return redirect()->route('dokter.halaman');
+    }
 }

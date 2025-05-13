@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dokter | Admin</title>
+    <title>Dokter | Dokter</title>
     <link rel="icon" href="{{ asset('assets/images/logo-klinik.svg') }}" type="image/svg+xml" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
@@ -96,7 +96,7 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark bg-blue" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading text-lavender">Admin</div>
+                        <div class="sb-sidenav-menu-heading text-lavender">Dokter</div>
                         <a class="nav-link text-lavender" href="/dashboard">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
@@ -105,17 +105,17 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
                         </a>
-                        <a class="nav-link text-lavender active" href="/dokter">
+                        <a class="nav-link text-lavender" href="/jadwal">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-calendar-days"></i></div>
+                            Jadwal
+                        </a>
+                        <a class="nav-link text-lavender active" href="{{ url('/halaman-dokter') }}">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
-                        <a class="nav-link text-lavender" href="/poli">
-                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-door-closed"></i></div>
-                            Poli
-                        </a>
-                        <a class="nav-link text-lavender" href="/pembayaran">
-                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
-                            Pembayaran
+                        <a class="nav-link text-lavender" href="/antrian">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-users-between-lines"></i></div>
+                            Antrian
                         </a>
                     </div>
                 </div>
@@ -132,19 +132,47 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Dokter</li>
                     </ol>
+
+                    {{-- Modal Verifikasi Email --}}
+                    @if(is_null($dokterData))
+                    <!-- Modal akan otomatis tampil -->
+                    <div class="modal fade show" id="verifikasiModal" tabindex="-1" style="display:block;" aria-modal="true" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ route('dokter.verifikasi') }}" method="POST">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Verifikasi Email</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        @if(session('error'))
+                                        <div class="alert alert-danger">{{ session('error') }}</div>
+                                        @endif
+                                        <div class="form-group">
+                                            <label for="email">Masukkan Email Anda:</label>
+                                            <input type="email" name="email" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Verifikasi</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Overlay untuk latar belakang --}}
+                    <div class="modal-backdrop fade show"></div>
+                    @else
+                    {{-- Data dokter akan tampil jika email terverifikasi --}}
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             Data Dokter
                         </div>
                         <div class="card-body">
-
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Dokter</button>
-
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>Nama</th>
                                         <th>Spesialis</th>
                                         <th>Status Dokter</th>
@@ -154,136 +182,68 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dokters as $index => $dokter)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $dokter->nama_dokter }}</td>
-                                        <td>{{ $dokter->spesialis }}</td>
-                                        <td>{{ $dokter->sts_dokter }}</td>
-                                        <td>{{ $dokter->no_hp }}</td>
-                                        <td>{{ $dokter->email }}</td>
+                                        <td>{{ $dokterData->nama_dokter }}</td>
+                                        <td>{{ $dokterData->spesialis }}</td>
+                                        <td>{{ $dokterData->sts_dokter }}</td>
+                                        <td>{{ $dokterData->no_hp }}</td>
+                                        <td>{{ $dokterData->email }}</td>
                                         <td>
                                             <!-- Edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $dokter->id }}">Edit</button>
-
-                                            <!-- Hapus -->
-                                            <form action="{{ url('/dokter/' . $dokter->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $dokter->id }}">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $dokter->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $dokter->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form action="{{ route('dokter.destroy', $dokter->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $dokter->id }}">Konfirmasi Hapus</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data dokter <strong>{{ $dokter->nama_dokter }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $dokterData->id }}">Edit Status</button>
                                         </td>
                                     </tr>
 
-                                    <!-- Modal Edit -->
-                                    <div class="modal fade" id="editModal{{ $dokter->id }}" tabindex="-1">
+                                    <div class="modal fade" id="editModal{{ $dokterData->id }}" tabindex="-1">
                                         <div class="modal-dialog">
-                                            <form action="{{ route('dokter.update', $dokter->id) }}" method="POST">
+                                            <form action="{{ route('dokter.update', $dokterData->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Dokter</h5>
+                                                        <h5 class="modal-title">Edit Status</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="mb-3">
+                                                        <div class="mb-3" style="display: none;">
                                                             <label>Nama Dokter</label>
-                                                            <input type="text" name="nama_dokter" class="form-control" value="{{ $dokter->nama_dokter }}">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Spesialis</label>
-                                                            <input type="text" name="spesialis" class="form-control" value="{{ $dokter->spesialis }}">
+                                                            <input type="text" name="nama_dokter" class="form-control" value="{{ $dokterData->nama_dokter }}">
                                                         </div>
                                                         <div class="mb-3" style="display: none;">
+                                                            <label>Spesialis</label>
+                                                            <input type="text" name="spesialis" class="form-control" value="{{ $dokterData->spesialis }}">
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label>Status Dokter</label>
                                                             <select name="sts_dokter" class="form-control" required>
-                                                                <option value="Tersedia" {{ $dokter->sts_dokter == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                                                <option value="Tidak Tersedia" {{ $dokter->sts_dokter == 'Tidak Tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
+                                                                <option value="Tersedia" {{ $dokterData->sts_dokter == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
+                                                                <option value="Tidak Tersedia" {{ $dokterData->sts_dokter == 'Tidak Tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
                                                             </select>
                                                         </div>
-                                                        <div class="mb-3">
+                                                        <div class="mb-3" style="display: none;">
                                                             <label>No HP</label>
-                                                            <input type="text" name="no_hp" class="form-control" value="{{ $dokter->no_hp }}">
+                                                            <input type="text" name="no_hp" class="form-control" value="{{ $dokterData->no_hp }}">
                                                         </div>
-                                                        <div class="mb-3">
+                                                        <div class="mb-3" style="display: none;">
                                                             <label>Email</label>
-                                                            <input type="text" name="email" class="form-control" value="{{ $dokter->email }}">
+                                                            <input type="text" name="email" class="form-control" value="{{ $dokterData->email }}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button class="btn btn-success">Simpan Perubahan</button>
+                                                        <button class="btn btn-success">Ubah Status</button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
-                                    @endforeach
                                 </tbody>
                             </table>
-
-                            <div class="modal fade" id="tambahModal" tabindex="-1">
-                                <div class="modal-dialog">
-                                    <form action="{{ route('dokter.store') }}" method="POST">
-                                        @csrf
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Tambah Dokter</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label>Nama Dokter</label>
-                                                    <input type="text" name="nama_dokter" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Spesialis</label>
-                                                    <input type="text" name="spesialis" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>No HP</label>
-                                                    <input type="text" name="no_hp" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Email</label>
-                                                    <input type="text" name="email" class="form-control" required>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-success">Simpan</button>
-                                                </div>
-                                            </div>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </main>
+
             <footer class="py-4 bg-light mt-auto bg-white">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
