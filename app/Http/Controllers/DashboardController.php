@@ -58,7 +58,6 @@ class DashboardController extends Controller
                 ));
 
             case 'admin':
-
                 // Pie chart data
                 $data = DB::table('rme')
                     ->join('poli', 'rme.poli_id', '=', 'poli.id')
@@ -89,7 +88,39 @@ class DashboardController extends Controller
                 ));
 
             case 'dokter':
-                return view('dokter.dashboard');
+                $jumlahMenunggu = Antrian::where('status', 'Menunggu')->count();
+                $jumlahSedangDiperiksa = Antrian::where('status', 'Sedang diperiksa')->count();
+
+                // Pie chart data
+                $data = DB::table('rme')
+                    ->join('poli', 'rme.poli_id', '=', 'poli.id')
+                    ->select('poli.nama_poli', DB::raw('COUNT(rme.id) as total'))
+                    ->groupBy('poli.nama_poli')
+                    ->get();
+                $labels = $data->pluck('nama_poli');
+                $counts = $data->pluck('total');
+
+                // Bar chart data
+                $rmePerMonth = DB::table('rme')
+                    ->select(
+                        DB::raw("MONTH(tgl_daftar) as bulan_num"),
+                        DB::raw("MONTHNAME(tgl_daftar) as bulan"),
+                        DB::raw("COUNT(*) as total")
+                    )
+                    ->groupBy(DB::raw("MONTH(tgl_daftar), MONTHNAME(tgl_daftar)"))
+                    ->orderBy(DB::raw("MONTH(tgl_daftar)"))
+                    ->get();
+                $bulanLabels = $rmePerMonth->pluck('bulan');
+                $jumlahPerBulan = $rmePerMonth->pluck('total');
+
+                return view('dokter.dashboard', compact(
+                    'jumlahMenunggu',
+                    'jumlahSedangDiperiksa',
+                    'labels',
+                    'counts',
+                    'bulanLabels',
+                    'jumlahPerBulan'
+                ));
 
             default:
                 abort(403, 'Akses ditolak');

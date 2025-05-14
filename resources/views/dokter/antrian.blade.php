@@ -172,7 +172,7 @@
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Antrian</h5>
+                                                        <h5 class="modal-title">Ubah Status</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -210,7 +210,7 @@
                                                         <div class="mb-3">
                                                             <label>Status</label>
                                                             <select name="status" class="form-control">
-                                                                @foreach(['Menunggu', 'Sedang diperiksa', 'Selesai'] as $status)
+                                                                @foreach(['Selesai'] as $status)
                                                                 <option value="{{ $status }}" {{ $antrian->status == $status ? 'selected' : '' }}>
                                                                     {{ $status }}
                                                                 </option>
