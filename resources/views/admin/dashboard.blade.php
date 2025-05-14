@@ -127,6 +127,28 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar me-1"></i>
+                                    Rekam Medis per Bulan
+                                </div>
+                                <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px;"><canvas id="myBarChart"></canvas></div>
+                                <div class="card-footer small text-muted">Updated recently</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-pie me-1"></i>
+                                    Data Poli Berdasarkan Rekam Medis
+                                </div>
+                                <div class="card-body d-flex justify-content-center align-items-center" style="height: 300px;"><canvas id="myPieChart"></canvas></div>
+                                <div class="card-footer small text-muted">Updated recently</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto bg-white">
@@ -138,11 +160,56 @@
             </footer>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Pie Chart (sudah kamu punya)
+        const pieLabels = @json($labels);
+        const pieData = @json($counts);
+
+        new Chart(document.getElementById("myPieChart"), {
+            type: 'pie',
+            data: {
+                labels: pieLabels,
+                datasets: [{
+                    data: pieData,
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                }],
+            }
+        });
+
+        // Bar Chart
+        const barLabels = @json($bulanLabels);
+        const barData = @json($jumlahPerBulan);
+
+        new Chart(document.getElementById("myBarChart"), {
+            type: 'bar',
+            data: {
+                labels: barLabels,
+                datasets: [{
+                    label: 'Jumlah RME per Bulan',
+                    backgroundColor: "#4e73df",
+                    borderColor: "#4e73df",
+                    data: barData,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0 // supaya tidak ada koma
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/datatables-simple-demo.js') }}"></script>
 </body>
