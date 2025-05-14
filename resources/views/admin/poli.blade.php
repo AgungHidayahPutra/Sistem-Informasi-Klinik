@@ -108,6 +108,10 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
+                        <a class="nav-link text-lavender" href="/user">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user"></i></div>
+                            User Account
+                        </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer bg-white text-dark">

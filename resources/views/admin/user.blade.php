@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dokter | Admin</title>
+    <title>User Account | Admin</title>
     <link rel="icon" href="{{ asset('assets/images/logo-klinik.svg') }}" type="image/svg+xml" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
@@ -105,7 +105,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
                         </a>
-                        <a class="nav-link text-lavender active" href="/dokter">
+                        <a class="nav-link text-lavender" href="/dokter">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user-doctor"></i></div>
                             Dokter
                         </a>
@@ -117,7 +117,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
-                        <a class="nav-link text-lavender" href="/user">
+                        <a class="nav-link text-lavender active" href="/user">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user"></i></div>
                             User Account
                         </a>
@@ -132,112 +132,73 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dokter</h1>
+                    <h1 class="mt-4">User Account</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dokter</li>
+                        <li class="breadcrumb-item active">Manajemen User</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Data Dokter
+                            <i class="fas fa-users me-1"></i>
+                            Data User
                         </div>
                         <div class="card-body">
 
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Dokter</button>
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah User</button>
 
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Spesialis</th>
-                                        <th>Status Dokter</th>
-                                        <th>No HP</th>
+                                        <th>Username</th>
                                         <th>Email</th>
+                                        <th>Role</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dokters as $index => $dokter)
+                                    @foreach ($users as $index => $user)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $dokter->nama_dokter }}</td>
-                                        <td>{{ $dokter->spesialis }}</td>
-                                        <td>{{ $dokter->sts_dokter }}</td>
-                                        <td>{{ $dokter->no_hp }}</td>
-                                        <td>{{ $dokter->email }}</td>
+                                        <td>{{ $user->username }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->role }}</td>
                                         <td>
-                                            <!-- Edit -->
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $dokter->id }}">Edit</button>
-
-                                            <!-- Hapus -->
-                                            <form action="{{ url('/dokter/' . $dokter->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $dokter->id }}">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $dokter->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $dokter->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form action="{{ route('dokter.destroy', $dokter->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $dokter->id }}">Konfirmasi Hapus</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data dokter <strong>{{ $dokter->nama_dokter }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $user->id }}">Edit</button>
+                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $user->id }}">Hapus</button>
                                         </td>
                                     </tr>
 
                                     <!-- Modal Edit -->
-                                    <div class="modal fade" id="editModal{{ $dokter->id }}" tabindex="-1">
+                                    <div class="modal fade" id="editModal{{ $user->id }}" tabindex="-1">
                                         <div class="modal-dialog">
-                                            <form action="{{ route('dokter.update', $dokter->id) }}" method="POST">
+                                            <form action="{{ route('user.update', $user->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Dokter</h5>
+                                                        <h5 class="modal-title">Edit User</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="mb-3">
-                                                            <label>Nama Dokter</label>
-                                                            <input type="text" name="nama_dokter" class="form-control" value="{{ $dokter->nama_dokter }}">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>Spesialis</label>
-                                                            <input type="text" name="spesialis" class="form-control" value="{{ $dokter->spesialis }}">
-                                                        </div>
-                                                        <div class="mb-3" style="display: none;">
-                                                            <label>Status Dokter</label>
-                                                            <select name="sts_dokter" class="form-control" required>
-                                                                <option value="Tersedia" {{ $dokter->sts_dokter == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                                                <option value="Tidak Tersedia" {{ $dokter->sts_dokter == 'Tidak Tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>No HP</label>
-                                                            <input type="text" name="no_hp" class="form-control" value="{{ $dokter->no_hp }}">
+                                                            <label>Username</label>
+                                                            <input type="text" name="username" class="form-control" value="{{ $user->username }}" required>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label>Email</label>
-                                                            <input type="text" name="email" class="form-control" value="{{ $dokter->email }}">
+                                                            <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Role</label>
+                                                            <select name="role" class="form-control" required>
+                                                                <option value="admin" {{ $user->role == 'Admin' ? 'selected' : '' }}>Admin</option>
+                                                                <option value="dokter" {{ $user->role == 'Dokter' ? 'selected' : '' }}>Dokter</option>
+                                                                <option value="resepsionis" {{ $user->role == 'Resepsionis' ? 'selected' : '' }}>Resepsionis</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Password <small>(Isi jika ingin mengubah)</small></label>
+                                                            <input type="password" name="password" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -247,47 +208,79 @@
                                             </form>
                                         </div>
                                     </div>
+
+                                    <!-- Modal Hapus -->
+                                    <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Apakah Anda yakin ingin menghapus user <strong>{{ $user->username }}</strong>?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
                                     @endforeach
                                 </tbody>
                             </table>
 
+                            <!-- Modal Tambah -->
                             <div class="modal fade" id="tambahModal" tabindex="-1">
                                 <div class="modal-dialog">
-                                    <form action="{{ route('dokter.store') }}" method="POST">
+                                    <form action="{{ route('user.store') }}" method="POST">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Tambah Dokter</h5>
+                                                <h5 class="modal-title">Tambah User</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <label>Nama Dokter</label>
-                                                    <input type="text" name="nama_dokter" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Spesialis</label>
-                                                    <input type="text" name="spesialis" class="form-control" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>No HP</label>
-                                                    <input type="text" name="no_hp" class="form-control" required>
+                                                    <label>Username</label>
+                                                    <input type="text" name="username" class="form-control" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Email</label>
-                                                    <input type="text" name="email" class="form-control" required>
+                                                    <input type="email" name="email" class="form-control" required>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-success">Simpan</button>
+                                                <div class="mb-3">
+                                                    <label>Role</label>
+                                                    <select name="role" class="form-control" required>
+                                                        <option value="admin">Admin</option>
+                                                        <option value="dokter">Dokter</option>
+                                                        <option value="resepsionis">Resepsionis</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Password</label>
+                                                    <input type="password" name="password" class="form-control" required>
                                                 </div>
                                             </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-success">Simpan</button>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </main>
+
             <footer class="py-4 bg-light mt-auto bg-white">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">

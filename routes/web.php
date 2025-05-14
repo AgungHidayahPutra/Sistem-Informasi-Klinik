@@ -10,6 +10,7 @@ use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\RekamMedisController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -30,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pembayaran', PembayaranController::class);
     Route::resource('jadwal', JadwalController::class);
     Route::resource('rekam-medis', RekamMedisController::class);
+    Route::resource('user', UserController::class);
 
     // Autocomplete routes
     Route::get('/autocompleteantrian/pasien', [AntrianController::class, 'autocompletePasien']);
@@ -50,4 +52,3 @@ Route::prefix('halaman-dokter')->middleware(['auth'])->group(function () {
     Route::get('/', [DokterController::class, 'halamanDokter'])->name('dokter.halaman');
     Route::post('/verifikasi', [DokterController::class, 'verifikasiEmail'])->name('dokter.verifikasi');
 });
-
