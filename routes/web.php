@@ -11,6 +11,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\RekamMedisController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExportController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -32,6 +33,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('jadwal', JadwalController::class);
     Route::resource('rekam-medis', RekamMedisController::class);
     Route::resource('user', UserController::class);
+
+    Route::get('/export', [ExportController::class, 'index'])->name('admin.export');
+    Route::get('/export/data-antrian', [ExportController::class, 'dataAntrian'])->name('admin.export.data-antrian');
+    Route::get('/export/data-pasien', [ExportController::class, 'dataPasien'])->name('admin.export.data-pasien');
+    Route::get('/export/data-rekam-medis', [ExportController::class, 'dataRekamMedis'])->name('admin.export.data-rekam-medis');
+    Route::get('/export/data-pembayaran', [ExportController::class, 'dataPembayaran'])->name('admin.export.data-pembayaran');
 
     // Autocomplete routes
     Route::get('/autocompleteantrian/pasien', [AntrianController::class, 'autocompletePasien']);

@@ -7,12 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Rekam Medis | Admin</title>
+    <title>Data Rekam Medis</title>
     <link rel="icon" href="{{ asset('assets/images/logo-klinik.svg') }}" type="image/svg+xml" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
     <style>
         @font-face {
@@ -56,6 +63,31 @@
             overflow-y: auto;
             position: absolute;
             z-index: 999;
+        }
+
+        .btn-copy {
+            background-color: #c4ad9d !important;
+            color: white !important;
+        }
+
+        .btn-csv {
+            background-color: #17a2b8 !important;
+            color: white !important;
+        }
+
+        .btn-excel {
+            background-color: #28a745 !important;
+            color: white !important;
+        }
+
+        .btn-pdf {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+
+        .btn-print {
+            background-color: #ffc107 !important;
+            color: black !important;
         }
     </style>
 </head>
@@ -101,7 +133,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link text-lavender active" href="/rekam-medis">
+                        <a class="nav-link text-lavender" href="/rekam-medis">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
                         </a>
@@ -117,7 +149,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
-                        <a class="nav-link text-lavender" href="/export">
+                        <a class="nav-link text-lavender active" href="/export">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-file-export"></i></div>
                             Export Data
                         </a>
@@ -147,7 +179,9 @@
                         </div>
                         <div class="card-body">
 
-                            <table id="datatablesSimple">
+                            <div class="export-buttons"></div>
+
+                            <table class="table table-bordered" id="exportstock" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -158,7 +192,6 @@
                                         <th>Resep Obat</th>
                                         <th>Penyakit</th>
                                         <th>Tanggal Daftar</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -172,44 +205,11 @@
                                         <td>{{ $rekammedis->resep_obat }}</td>
                                         <td>{{ $rekammedis->penyakit }}</td>
                                         <td>{{ $rekammedis->tgl_daftar }}</td>
-                                        <td>
-
-                                            <!-- Hapus -->
-                                            <form action="{{ url('/rekammedis/' . $rekammedis->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $rekammedis->id }}">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $rekammedis->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $rekammedis->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form action="{{ route('rekam-medis.destroy', $rekammedis->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $rekammedis->id }}">Konfirmasi Hapus</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data rekam medis pasien <strong>{{ $rekammedis->pasien->nama_pasien }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
@@ -224,56 +224,55 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function autocompleteInput(inputId, listId, hiddenId, route) {
-            $('#' + inputId).on('keyup', function() {
-                let query = $(this).val();
-                if (query.length > 1) {
-                    $.get(route, {
-                        term: query
-                    }, function(data) {
-                        let listHtml = '';
-                        data.forEach(item => {
-                            listHtml += `<button type="button" class="list-group-item list-group-item-action" data-id="${item.id}" data-nama="${item.label}">${item.label}</button>`;
-                        });
-                        $('#' + listId).html(listHtml).fadeIn();
-                    });
-                } else {
-                    $('#' + listId).fadeOut();
-                }
-            });
-
-            $('#' + listId).on('click', 'button', function() {
-                let nama = $(this).data('nama');
-                let id = $(this).data('id');
-                $('#' + inputId).val(nama);
-                $('#' + hiddenId).val(id);
-                $('#' + listId).fadeOut();
-            });
-        }
-
         $(document).ready(function() {
-            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompleterekammedis/pasien');
-            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocompleterekammedis/poli');
-            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompleterekammedis/dokter');
+            var table = $('#exportstock').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        text: '<i class="fas fa-copy"></i> Salin Data',
+                        className: 'btn-copy'
+                    },
+                    {
+                        extend: 'csv',
+                        text: '<i class="fas fa-file-csv"></i> Ekspor CSV',
+                        className: 'btn-csv'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Ekspor Excel',
+                        className: 'btn-excel'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> Ekspor PDF',
+                        className: 'btn-pdf'
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="fas fa-print"></i> Cetak',
+                        className: 'btn-print'
+                    }
+                ]
+            });
+
+            table.buttons().container().appendTo('.export-buttons');
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/datatables-simple-demo.js') }}"></script>
-    @if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: "{{ session('error') }}"
-        });
-    </script>
-    @endif
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 </body>
 
 </html>

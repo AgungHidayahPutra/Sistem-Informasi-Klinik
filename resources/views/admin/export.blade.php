@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Rekam Medis | Admin</title>
+    <title>Export | Admin</title>
     <link rel="icon" href="{{ asset('assets/images/logo-klinik.svg') }}" type="image/svg+xml" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
@@ -57,6 +57,61 @@
             position: absolute;
             z-index: 999;
         }
+
+        .card-export {
+            padding: 30px 20px;
+        }
+
+        .btn-export-antrian,
+        .btn-export-pasien,
+        .btn-export-rekam-medis,
+        .btn-export-pembayaran {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            height: 100px;
+            font-weight: bolder;
+            font-size: 20px;
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .btn-export-antrian {
+            background-color: #4fc1e9;
+        }
+
+        .btn-export-antrian:hover {
+            background-color: #359CC1;
+            color: #000000;
+        }
+
+        .btn-export-pasien {
+            background-color: #48cfad;
+        }
+
+        .btn-export-pasien:hover {
+            background-color: #32AF8E;
+            color: #000000;
+        }
+
+        .btn-export-rekam-medis {
+            background-color: #fc6e51;
+        }
+
+        .btn-export-rekam-medis:hover {
+            background-color: #C54024;
+            color: #000000;
+        }
+
+        .btn-export-pembayaran {
+            background-color: #eee7ca;
+        }
+
+        .btn-export-pembayaran:hover {
+            background-color: #dcceac;
+            color: #000000;
+        }
     </style>
 </head>
 
@@ -101,7 +156,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-house"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link text-lavender active" href="/rekam-medis">
+                        <a class="nav-link text-lavender" href="/rekam-medis">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-laptop-medical"></i></div>
                             Rekam Medis
                         </a>
@@ -117,7 +172,7 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
-                        <a class="nav-link text-lavender" href="/export">
+                        <a class="nav-link text-lavender active" href="/export">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-file-export"></i></div>
                             Export Data
                         </a>
@@ -136,80 +191,18 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Rekam Medis</h1>
+                    <h1 class="mt-4">Export Data</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Rekam Medis</li>
+                        <li class="breadcrumb-item active">Export Data</li>
                     </ol>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Data Rekam Medis
-                        </div>
-                        <div class="card-body">
-
-                            <table id="datatablesSimple">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Pasien</th>
-                                        <th>Nama Poli</th>
-                                        <th>Nama Dokter</th>
-                                        <th>Keluhan</th>
-                                        <th>Resep Obat</th>
-                                        <th>Penyakit</th>
-                                        <th>Tanggal Daftar</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($datarekammedis as $index => $rekammedis)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $rekammedis->pasien->nama_pasien }}</td>
-                                        <td>{{ $rekammedis->poli->nama_poli }}</td>
-                                        <td>{{ $rekammedis->dokter->nama_dokter }}</td>
-                                        <td>{{ $rekammedis->keluhan }}</td>
-                                        <td>{{ $rekammedis->resep_obat }}</td>
-                                        <td>{{ $rekammedis->penyakit }}</td>
-                                        <td>{{ $rekammedis->tgl_daftar }}</td>
-                                        <td>
-
-                                            <!-- Hapus -->
-                                            <form action="{{ url('/rekammedis/' . $rekammedis->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $rekammedis->id }}">
-                                                    Delete
-                                                </button>
-                                            </form>
-
-                                            <!-- Modal Konfirmasi Delete -->
-                                            <div class="modal fade" id="deleteModal{{ $rekammedis->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $rekammedis->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <form action="{{ route('rekam-medis.destroy', $rekammedis->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteModalLabel{{ $rekammedis->id }}">Konfirmasi Hapus</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin ingin menghapus data rekam medis pasien <strong>{{ $rekammedis->pasien->nama_pasien }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                    <div class="card mb-4 bg-dark text-light mt-3">
+                        <div class="card-export">
+                            <div class="row d-flex flex-column flex-md-row">
+                                <div class="col mb-3 mb-md-0"><a href="/export/data-antrian" class="btn btn-export-antrian">Antrian</a></div>
+                                <div class="col mb-3 mb-md-0"><a href="/export/data-pasien" class="btn btn-export-pasien">Pasien</a></div>
+                                <div class="col mb-3 mb-md-0"><a href="/export/data-rekam-medis" class="btn btn-export-rekam-medis">Rekam Medis</a></div>
+                                <div class="col mb-3 mb-md-0"><a href="/export/data-pembayaran" class="btn btn-export-pembayaran">Pembayaran</a></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -223,42 +216,6 @@
             </footer>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function autocompleteInput(inputId, listId, hiddenId, route) {
-            $('#' + inputId).on('keyup', function() {
-                let query = $(this).val();
-                if (query.length > 1) {
-                    $.get(route, {
-                        term: query
-                    }, function(data) {
-                        let listHtml = '';
-                        data.forEach(item => {
-                            listHtml += `<button type="button" class="list-group-item list-group-item-action" data-id="${item.id}" data-nama="${item.label}">${item.label}</button>`;
-                        });
-                        $('#' + listId).html(listHtml).fadeIn();
-                    });
-                } else {
-                    $('#' + listId).fadeOut();
-                }
-            });
-
-            $('#' + listId).on('click', 'button', function() {
-                let nama = $(this).data('nama');
-                let id = $(this).data('id');
-                $('#' + inputId).val(nama);
-                $('#' + hiddenId).val(id);
-                $('#' + listId).fadeOut();
-            });
-        }
-
-        $(document).ready(function() {
-            autocompleteInput('nama_pasien', 'list_pasien', 'pasien_id', '/autocompleterekammedis/pasien');
-            autocompleteInput('nama_poli', 'list_poli', 'poli_id', '/autocompleterekammedis/poli');
-            autocompleteInput('nama_dokter', 'list_dokter', 'dokter_id', '/autocompleterekammedis/dokter');
-        });
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>

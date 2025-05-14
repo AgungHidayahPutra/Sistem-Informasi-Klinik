@@ -108,6 +108,10 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
+                        <a class="nav-link text-lavender" href="/export">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-file-export"></i></div>
+                            Export Data
+                        </a>
                         <a class="nav-link text-lavender" href="/user">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user"></i></div>
                             User Account
@@ -133,7 +137,7 @@
                             Data Poli
                         </div>
                         <div class="card-body">
-                            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Tambah Poli</button>
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Tambah Poli</button>
 
                             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">

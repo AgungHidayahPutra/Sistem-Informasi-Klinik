@@ -117,6 +117,10 @@
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-money-bill-wave"></i></div>
                             Pembayaran
                         </a>
+                        <a class="nav-link text-lavender" href="/export">
+                            <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-file-export"></i></div>
+                            Export Data
+                        </a>
                         <a class="nav-link text-lavender active" href="/user">
                             <div class="sb-nav-link-icon text-lavender"><i class="fa-solid fa-user"></i></div>
                             User Account
