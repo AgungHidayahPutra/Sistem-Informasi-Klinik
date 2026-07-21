@@ -12,6 +12,9 @@ class DatabaseSeeder extends Seeder
             PoliSeeder::class,
             DokterSeeder::class,
             PasienSeeder::class,
+            RmeSeeder::class,
+            AntrianSeeder::class,
+            PembayaranSeeder::class,
             UserSeeder::class,
         ]);
     }
